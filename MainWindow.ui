@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>979</width>
-    <height>604</height>
+    <height>486</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -446,6 +446,8 @@ QMenu::item:selected
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
    </widget>
    <widget class="CustomMenu" name="menuAbout">
     <property name="title">
@@ -456,6 +458,11 @@ QMenu::item:selected
    <addaction name="menuAbout"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -467,5 +474,22 @@ QMenu::item:selected
  <resources>
   <include location="Icon.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionExit</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>489</x>
+     <y>242</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

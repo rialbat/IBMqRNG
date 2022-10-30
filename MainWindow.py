@@ -22,7 +22,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(979, 604)
+        MainWindow.resize(979, 486)
         icon = QIcon()
         icon.addFile(u":/images/icon.png", QSize(), QIcon.Normal, QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -97,6 +97,8 @@ class Ui_MainWindow(object):
 "	font-family:Century Gothic, sans-serif;\n"
 "	color:rgb(255,255,255);\n"
 "}")
+        self.actionExit = QAction(MainWindow)
+        self.actionExit.setObjectName(u"actionExit")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout_4 = QGridLayout(self.centralwidget)
@@ -334,8 +336,11 @@ class Ui_MainWindow(object):
 
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuAbout.menuAction())
+        self.menuFile.addSeparator()
+        self.menuFile.addAction(self.actionExit)
 
         self.retranslateUi(MainWindow)
+        self.actionExit.triggered.connect(MainWindow.close)
 
         self.tabWidget.setCurrentIndex(0)
 
@@ -345,6 +350,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"IBMqRNG", None))
+        self.actionExit.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"Backends", None))
         self.backendsComboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Cloud backends", None))
         self.backendsComboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Local backends", None))
