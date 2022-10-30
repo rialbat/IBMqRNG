@@ -1,12 +1,34 @@
 # IBM
 import ibmapi
 
+# System
+import sys
+
 # GUI
 from PySide6 import QtWidgets, QtCore, QtGui
 import MainWindow
 
 programVersion = '0.1'
 
+
+class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+        self.menuAbout.customTriggeredSignal.connect(self.aboutMessage)
+        # self.startButton.clicked.connect(self.startAsyncSerch)
+        # self._model = QtGui.QStandardItemModel()
+        # self.tableInit()
+
+        self._shots = 20000
+        self._qbits = 1
+        self._threads = 1
+
+        # self._serverResponseList = []
+
+    def aboutMessage(self):
+        QtWidgets.QMessageBox.about(self, "About",
+                                    str("The program was created by rialbat\nVersion: %s\nMIT License" % programVersion))
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
