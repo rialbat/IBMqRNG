@@ -7,8 +7,20 @@ import sys
 # GUI
 from PySide6 import QtWidgets, QtCore, QtGui
 import MainWindow
+import AuthWindow
 
 programVersion = '0.1'
+
+
+class AuthUI(QtWidgets.QDialog, AuthWindow.Ui_Dialog):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+
+
+    def successLogin(self):
+        pass
+    # Request to the IBM server then check answer (try, catch)
 
 
 class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
@@ -30,11 +42,15 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         QtWidgets.QMessageBox.about(self, "About",
                                     str("The program was created by rialbat\nVersion: %s\nMIT License" % programVersion))
 
+
 def main():
     app = QtWidgets.QApplication(sys.argv)
-    window = ProgrammUI()
-    window.show()
-    app.exec()
+    auth_window = AuthUI()
+    auth_window.show()
+    if auth_window.successLogin:
+        window = ProgrammUI()
+        window.show()
+        app.exec()
 
 
 if __name__ == '__main__':
