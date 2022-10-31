@@ -16,10 +16,23 @@ class AuthUI(QtWidgets.QDialog, AuthWindow.Ui_Dialog):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+        self.loginPushButton.clicked.connect(self.login)
+
+        self._token = ""
+
+
+
+    def login(self):
+        if ibmapi.IBMQLogin(self.keyLineEdit.text()) == 1:
+            pass
+        else:
+            QtWidgets.QMessageBox.warning(self, "Error",
+                                          "Key can't be empty!")
+
 
 
     def successLogin(self):
-        pass
+        self.close()
     # Request to the IBM server then check answer (try, catch)
 
 
@@ -46,8 +59,9 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
 def main():
     app = QtWidgets.QApplication(sys.argv)
     auth_window = AuthUI()
-    auth_window.show()
-    if auth_window.successLogin:
+    if(auth_window.exec()):
+        pass
+    else:
         window = ProgrammUI()
         window.show()
         app.exec()

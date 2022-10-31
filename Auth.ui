@@ -30,15 +30,7 @@
     <normaloff>:/images/icon.png</normaloff>:/images/icon.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">QPushButton
-{
-	background:rgb(0,133,252);
-	border-radius:4px;
-	font-size:15px;
-	font-family:Century Gothic, sans-serif;
-	color:rgb(255,255,255);
-}
-*{
+   <string notr="true">*{
 	background:rgb(255,255,255);
 }
 #welcomeLabel
@@ -60,6 +52,54 @@ QToolButton
 	border: 1px solid #717072;
 	font-size:15px;
 	font-family:Century Gothic, sans-serif;
+}
+#cancelPushButton
+{
+	background:rgb(0,133,252);
+	border-radius:4px;
+	font-size:15px;
+	font-family:Century Gothic, sans-serif;
+	color:rgb(255,255,255);
+}
+#cancelPushButton:pressed
+{
+	background:rgb(0,122,228);
+	border-radius:4px;
+	font-size:15px;
+	font-family:Century Gothic, sans-serif;
+	color:rgb(255,255,255);
+}
+#cancelPushButton:disabled
+{
+	background:rgb(143,188,228);
+	border-radius:4px;
+	font-size:15px;
+	font-family:Century Gothic, sans-serif;
+	color:rgb(255,255,255);
+}
+#loginPushButton
+{
+	background:rgb(0,133,252);
+	border-radius:4px;
+	font-size:15px;
+	font-family:Century Gothic, sans-serif;
+	color:rgb(255,255,255);
+}
+#loginPushButton:pressed
+{
+	background:rgb(0,122,228);
+	border-radius:4px;
+	font-size:15px;
+	font-family:Century Gothic, sans-serif;
+	color:rgb(255,255,255);
+}
+#loginPushButton:disabled
+{
+	background:rgb(143,188,228);
+	border-radius:4px;
+	font-size:15px;
+	font-family:Century Gothic, sans-serif;
+	color:rgb(255,255,255);
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
