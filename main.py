@@ -3,6 +3,10 @@ import ibmapi
 
 # System
 import sys
+import os.path
+
+# RegEx
+import re
 
 # GUI
 from PySide6 import QtWidgets, QtCore, QtGui
@@ -18,15 +22,19 @@ class AuthUI(QtWidgets.QDialog, AuthWindow.Ui_Dialog):
         self.setupUi(self)
         self.loginPushButton.clicked.connect(self.login)
 
+        self._credsFile = open(os.path.join(os.path.expanduser("~"),
+                                            '.qiskit', 'qiskitrc'), "r")
         self._token = ""
+        self._successLogin = False
 
-
+        self.keyLineEdit.setText(self.loadCreds(self._credsFile.read()))
 
     def login(self):
         IBManswer = ibmapi.IBMQLogin(self.keyLineEdit.text())
-
+        self._token = self.keyLineEdit.text()
         if IBManswer == 1:
-            pass
+            self._successLogin = True
+            self.close()
         elif IBManswer == -1:
             QtWidgets.QMessageBox.warning(self, "Error",
                                           "Key can't be empty!")
@@ -43,11 +51,21 @@ class AuthUI(QtWidgets.QDialog, AuthWindow.Ui_Dialog):
             QtWidgets.QMessageBox.warning(self, "Error",
                                           "Unknown error!")
 
+    def loadCreds(self, token):
+        regExPattern = 'token = (.*?)\n'
+        finalMatch = ''
+        matches = re.finditer(regExPattern, token, re.MULTILINE)
 
+        for matchNum, match in enumerate(matches, start=1):
+            for groupNum in range(0, len(match.groups())):
+                groupNum = groupNum + 1
+                if match.group(groupNum) is not None:
+                    finalMatch = finalMatch + match.group(groupNum)
+        return finalMatch
 
+    @property
     def successLogin(self):
-        self.close()
-    # Request to the IBM server then check answer (try, catch)
+        return self._successLogin
 
 
 class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
@@ -55,6 +73,7 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.menuAbout.customTriggeredSignal.connect(self.aboutMessage)
+        self.backendsComboBox.currentIndexChanged.connect(self.updateServers)
         # self.startButton.clicked.connect(self.startAsyncSerch)
         # self._model = QtGui.QStandardItemModel()
         # self.tableInit()
@@ -63,19 +82,21 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self._qbits = 1
         self._threads = 1
 
-        # self._serverResponseList = []
+        self.updateServers()
 
     def aboutMessage(self):
         QtWidgets.QMessageBox.about(self, "About",
                                     str("The program was created by rialbat\nVersion: %s\nMIT License" % programVersion))
 
+    def updateServers(self):
+        if(self.backendsComboBox.)
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
     auth_window = AuthUI()
-    if(auth_window.exec()):
+    if auth_window.exec() and not auth_window.successLogin:
         pass
-    else:
+    if auth_window.successLogin:
         window = ProgrammUI()
         window.show()
         app.exec()

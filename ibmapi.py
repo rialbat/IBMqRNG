@@ -12,6 +12,7 @@ def IBMQLogin(token):
             IBMQ.save_account(token, overwrite=True)
             IBMQ.load_account()
             provider = IBMQ.get_provider('ibm-q')
+            return 1
         except Exception as ex:
             with open("ErrorLog.txt", "a") as f:
                 f.write('\n' + str(datetime.datetime.now()) + '\n' + str(ex.args))
@@ -29,8 +30,14 @@ def IBMQLogin(token):
                 message = template.format(type(ex).__name__, ex.args)
                 print(message)
                 return -5
-        finally:
-            return 1
+
+def getCloudServers():
+    global provider
+    return provider.backends()
+
+def getLocalServers():
+    return qiskit.Aer.backends()
+
 
 
 
