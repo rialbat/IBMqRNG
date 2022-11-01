@@ -23,11 +23,25 @@ class AuthUI(QtWidgets.QDialog, AuthWindow.Ui_Dialog):
 
 
     def login(self):
-        if ibmapi.IBMQLogin(self.keyLineEdit.text()) == 1:
+        IBManswer = ibmapi.IBMQLogin(self.keyLineEdit.text())
+
+        if IBManswer == 1:
             pass
-        else:
+        elif IBManswer == -1:
             QtWidgets.QMessageBox.warning(self, "Error",
                                           "Key can't be empty!")
+        elif IBManswer == -2:
+            QtWidgets.QMessageBox.warning(self, "Error",
+                                          "This service isn't available in your country!")
+        elif IBManswer == -3:
+            QtWidgets.QMessageBox.warning(self, "Error",
+                                          "No internet connection!")
+        elif IBManswer == -4:
+            QtWidgets.QMessageBox.warning(self, "Error",
+                                          "Login failed!")
+        elif IBManswer == -5:
+            QtWidgets.QMessageBox.warning(self, "Error",
+                                          "Unknown error!")
 
 
 
