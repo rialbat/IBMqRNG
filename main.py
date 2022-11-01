@@ -74,6 +74,7 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.setupUi(self)
         self.menuAbout.customTriggeredSignal.connect(self.aboutMessage)
         self.backendsComboBox.currentIndexChanged.connect(self.updateServers)
+        self.shotsSpinBox.valueChanged.connect(self.updateShotsStatus)
         # self.startButton.clicked.connect(self.startAsyncSerch)
         # self._model = QtGui.QStandardItemModel()
         # self.tableInit()
@@ -81,6 +82,9 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self._shots = 20000
         self._qbits = 1
         self._threads = 1
+        self._cloudServers = ibmapi.getCloudServers()
+        self._localServers = ibmapi.getLocalServers()
+        self.shotsLabelStatusValue.setText(str(self.shotsSpinBox.value()))
 
         self.updateServers()
 
@@ -89,7 +93,16 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
                                     str("The program was created by rialbat\nVersion: %s\nMIT License" % programVersion))
 
     def updateServers(self):
-        if(self.backendsComboBox.)
+        self.backendsListWidget.clear()
+        if(self.backendsComboBox.currentIndex() == 0):
+            for i in self._cloudServers:
+                self.backendsListWidget.addItem(str(i))
+        else:
+            for i in self._localServers:
+                self.backendsListWidget.addItem(str(i))
+
+    def updateShotsStatus(self):
+        self.shotsLabelStatusValue.setText(str(self.shotsSpinBox.value()))
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
