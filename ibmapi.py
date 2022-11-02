@@ -1,5 +1,5 @@
 import qiskit
-from qiskit import IBMQ
+from qiskit import IBMQ, transpile
 import datetime
 
 
@@ -37,6 +37,21 @@ def getCloudServers():
 
 def getLocalServers():
     return qiskit.Aer.backends()
+
+def createCircuit(n):
+    qr = qiskit.QuantumRegister(n)
+    cr = qiskit.ClassicalRegister(n)
+    circuit = qiskit.QuantumCircuit(qr, cr)
+    circuit.h(qr)
+    circuit.measure(qr, cr)
+    return circuit
+
+def createRequest(qbits, backend, shots):
+    simulator = provider.get_backend(backend)
+    circ = transpile(createCircuit(qbits), simulator)
+
+    result = simulator.run(circ, shots=shots, memory=True).result()
+    return result
 
 
 

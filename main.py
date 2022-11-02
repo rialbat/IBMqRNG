@@ -13,7 +13,7 @@ from PySide6 import QtWidgets, QtCore, QtGui
 import MainWindow
 import AuthWindow
 
-programVersion = '0.1'
+programVersion = '0.2'
 
 
 class AuthUI(QtWidgets.QDialog, AuthWindow.Ui_Dialog):
@@ -75,18 +75,27 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.menuAbout.customTriggeredSignal.connect(self.aboutMessage)
         self.backendsComboBox.currentIndexChanged.connect(self.updateServers)
         self.shotsSpinBox.valueChanged.connect(self.updateShotsStatus)
-        # self.startButton.clicked.connect(self.startAsyncSerch)
+        self.threadsSpinBox.valueChanged.connect(self.updateThreadsStatus)
+        self.qbitsSpinBox.valueChanged.connect(self.updateQbitsStatus)
+        self.startPushButton.clicked.connect(self.startAsync)
+        self.backendsListWidget.itemSelectionChanged.connect(self.selectBackend)
         # self._model = QtGui.QStandardItemModel()
         # self.tableInit()
 
         self._shots = 20000
         self._qbits = 1
         self._threads = 1
+        self._backend = ""
         self._cloudServers = ibmapi.getCloudServers()
         self._localServers = ibmapi.getLocalServers()
         self.shotsLabelStatusValue.setText(str(self.shotsSpinBox.value()))
+        self.threadsLabelStatusValue.setText(str(self.threadsSpinBox.value()))
+        self.qbitsLabelStatusValue.setText(str(self.qbitsSpinBox.value()))
+
 
         self.updateServers()
+
+        self._resultsList = []
 
     def aboutMessage(self):
         QtWidgets.QMessageBox.about(self, "About",
@@ -103,6 +112,36 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
 
     def updateShotsStatus(self):
         self.shotsLabelStatusValue.setText(str(self.shotsSpinBox.value()))
+        self._shots = self.shotsSpinBox.value()
+
+    def updateThreadsStatus(self):
+        self.threadsLabelStatusValue.setText(str(self.threadsSpinBox.value()))
+        self._threads = self.threadsSpinBox.value()
+
+    def updateQbitsStatus(self):
+        self.qbitsLabelStatusValue.setText(str(self.qbitsSpinBox.value()))
+        self._qbits = self.qbitsSpinBox.value()
+
+    def startAsync(self):
+        # Disable all buttons
+        self.shotsSpinBox.setEnabled(False)
+        self.threadsSpinBox.setEnabled(False)
+        self.qbitsSpinBox.setEnabled(False)
+        self.startPushButton.setEnabled(False)
+
+        self._resultsList.append(ibmapi.createRequest(self._qbits, self._backend, self._shots))
+        # memory = result.get_memory(circ)
+        print(self._resultsList[0])
+
+    def selectBackend(self):
+        self._backend = self.backendsListWidget.currentItem().text()
+        self.startPushButton.setEnabled(True)
+
+        if self.backendsComboBox.currentIndex() == 1:
+            self.queueLabelValue.setText("0")
+            self.systemLabelValue.setText("Online")
+        else:
+            pass
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
@@ -117,3 +156,9 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+"""
+TODO:
+1. Func to QTool Button
+2. Table to Statistics
+"""

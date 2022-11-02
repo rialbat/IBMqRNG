@@ -113,7 +113,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.groupBox = QGroupBox(self.Generator)
         self.groupBox.setObjectName(u"groupBox")
-        self.groupBox.setMaximumSize(QSize(200, 16777215))
+        self.groupBox.setMaximumSize(QSize(261, 16777215))
         self.gridLayout = QGridLayout(self.groupBox)
         self.gridLayout.setObjectName(u"gridLayout")
         self.verticalLayout = QVBoxLayout()
@@ -221,8 +221,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.systemLabel = QLabel(self.groupBox_3)
         self.systemLabel.setObjectName(u"systemLabel")
-        self.systemLabel.setMinimumSize(QSize(92, 0))
-        self.systemLabel.setMaximumSize(QSize(92, 16777215))
+        self.systemLabel.setMinimumSize(QSize(112, 0))
+        self.systemLabel.setMaximumSize(QSize(112, 16777215))
 
         self.horizontalLayout.addWidget(self.systemLabel)
 
@@ -243,8 +243,8 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.queueLabel.sizePolicy().hasHeightForWidth())
         self.queueLabel.setSizePolicy(sizePolicy)
-        self.queueLabel.setMinimumSize(QSize(92, 0))
-        self.queueLabel.setMaximumSize(QSize(92, 16777215))
+        self.queueLabel.setMinimumSize(QSize(112, 0))
+        self.queueLabel.setMaximumSize(QSize(112, 16777215))
 
         self.horizontalLayout_2.addWidget(self.queueLabel)
 
@@ -262,8 +262,8 @@ class Ui_MainWindow(object):
         self.shotsLabelStatus.setObjectName(u"shotsLabelStatus")
         sizePolicy.setHeightForWidth(self.shotsLabelStatus.sizePolicy().hasHeightForWidth())
         self.shotsLabelStatus.setSizePolicy(sizePolicy)
-        self.shotsLabelStatus.setMinimumSize(QSize(92, 0))
-        self.shotsLabelStatus.setMaximumSize(QSize(92, 16777215))
+        self.shotsLabelStatus.setMinimumSize(QSize(112, 0))
+        self.shotsLabelStatus.setMaximumSize(QSize(112, 16777215))
 
         self.horizontalLayout_3.addWidget(self.shotsLabelStatus)
 
@@ -279,8 +279,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.qbitsLabelStatus = QLabel(self.groupBox_3)
         self.qbitsLabelStatus.setObjectName(u"qbitsLabelStatus")
-        self.qbitsLabelStatus.setMinimumSize(QSize(92, 0))
-        self.qbitsLabelStatus.setMaximumSize(QSize(92, 16777215))
+        self.qbitsLabelStatus.setMinimumSize(QSize(112, 0))
+        self.qbitsLabelStatus.setMaximumSize(QSize(112, 16777215))
 
         self.horizontalLayout_4.addWidget(self.qbitsLabelStatus)
 
@@ -291,6 +291,23 @@ class Ui_MainWindow(object):
 
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_4)
+
+        self.horizontalLayout_13 = QHBoxLayout()
+        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
+        self.threadsLabelStatus = QLabel(self.groupBox_3)
+        self.threadsLabelStatus.setObjectName(u"threadsLabelStatus")
+        self.threadsLabelStatus.setMinimumSize(QSize(112, 0))
+        self.threadsLabelStatus.setMaximumSize(QSize(112, 16777215))
+
+        self.horizontalLayout_13.addWidget(self.threadsLabelStatus)
+
+        self.threadsLabelStatusValue = QLabel(self.groupBox_3)
+        self.threadsLabelStatusValue.setObjectName(u"threadsLabelStatusValue")
+
+        self.horizontalLayout_13.addWidget(self.threadsLabelStatusValue)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_13)
 
 
         self.gridLayout_2.addLayout(self.verticalLayout_2, 0, 0, 1, 1)
@@ -304,6 +321,7 @@ class Ui_MainWindow(object):
 
         self.startPushButton = QPushButton(self.Generator)
         self.startPushButton.setObjectName(u"startPushButton")
+        self.startPushButton.setEnabled(False)
         self.startPushButton.setMinimumSize(QSize(0, 30))
 
         self.verticalLayout_4.addWidget(self.startPushButton)
@@ -362,12 +380,14 @@ class Ui_MainWindow(object):
         self.groupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"Status", None))
         self.systemLabel.setText(QCoreApplication.translate("MainWindow", u"System status:", None))
         self.systemLabelValue.setText(QCoreApplication.translate("MainWindow", u"Waiting...", None))
-        self.queueLabel.setText(QCoreApplication.translate("MainWindow", u"Queue position:", None))
+        self.queueLabel.setText(QCoreApplication.translate("MainWindow", u"Queue state:", None))
         self.queueLabelValue.setText(QCoreApplication.translate("MainWindow", u"Waiting...", None))
         self.shotsLabelStatus.setText(QCoreApplication.translate("MainWindow", u"Number of shots:", None))
         self.shotsLabelStatusValue.setText(QCoreApplication.translate("MainWindow", u"Waiting...", None))
         self.qbitsLabelStatus.setText(QCoreApplication.translate("MainWindow", u"Number of qbits:", None))
         self.qbitsLabelStatusValue.setText(QCoreApplication.translate("MainWindow", u"Waiting...", None))
+        self.threadsLabelStatus.setText(QCoreApplication.translate("MainWindow", u"Number of threads:", None))
+        self.threadsLabelStatusValue.setText(QCoreApplication.translate("MainWindow", u"Waiting...", None))
         self.startPushButton.setText(QCoreApplication.translate("MainWindow", u"Start", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.Generator), QCoreApplication.translate("MainWindow", u"Generator", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.Statistics), QCoreApplication.translate("MainWindow", u"Statistics", None))
