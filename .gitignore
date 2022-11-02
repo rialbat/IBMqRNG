@@ -153,3 +153,4 @@ cython_debug/
 *.txt
 .idea/IBMqRNG.iml
 .idea/misc.xml
+*.html

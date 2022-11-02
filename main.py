@@ -13,7 +13,10 @@ from PySide6 import QtWidgets, QtCore, QtGui
 import MainWindow
 import AuthWindow
 
-programVersion = '0.2'
+#Network
+import requests
+
+programVersion = '0.3'
 
 
 class AuthUI(QtWidgets.QDialog, AuthWindow.Ui_Dialog):
@@ -21,6 +24,7 @@ class AuthUI(QtWidgets.QDialog, AuthWindow.Ui_Dialog):
         super().__init__()
         self.setupUi(self)
         self.loginPushButton.clicked.connect(self.login)
+        self.questionToolButton.clicked.connect(self.helpDialog)
 
         self._credsFile = open(os.path.join(os.path.expanduser("~"),
                                             '.qiskit', 'qiskitrc'), "r")
@@ -63,6 +67,10 @@ class AuthUI(QtWidgets.QDialog, AuthWindow.Ui_Dialog):
                     finalMatch = finalMatch + match.group(groupNum)
         return finalMatch
 
+    def helpDialog(self):
+        QtWidgets.QMessageBox.about(self, "About",
+                                    str("The program was created by Rialbat\nVersion: %s\nMIT License" % programVersion))
+
     @property
     def successLogin(self):
         return self._successLogin
@@ -79,8 +87,8 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.qbitsSpinBox.valueChanged.connect(self.updateQbitsStatus)
         self.startPushButton.clicked.connect(self.startAsync)
         self.backendsListWidget.itemSelectionChanged.connect(self.selectBackend)
-        # self._model = QtGui.QStandardItemModel()
-        # self.tableInit()
+        self._model = QtGui.QStandardItemModel()
+        self.tableInit()
 
         self._shots = 20000
         self._qbits = 1
@@ -92,21 +100,33 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.threadsLabelStatusValue.setText(str(self.threadsSpinBox.value()))
         self.qbitsLabelStatusValue.setText(str(self.qbitsSpinBox.value()))
 
-
         self.updateServers()
 
         self._resultsList = []
 
+
+    def tableInit(self):
+        headersLabels = ["Q1", "Q2"]
+
+        self._model.setHorizontalHeaderLabels(headersLabels)
+        self.resultListView.setModel(self._model)
+        self.resultListView.show()
+        # self.resultListView.resizeRowsToContents()
+        # self.resultListView.horizontalHeader().setDefaultAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.TextWordWrap) # type: ignore
+
+
     def aboutMessage(self):
         QtWidgets.QMessageBox.about(self, "About",
-                                    str("The program was created by rialbat\nVersion: %s\nMIT License" % programVersion))
+                                    str("The program was created by Rialbat\nVersion: %s\nMIT License" % programVersion))
 
     def updateServers(self):
         self.backendsListWidget.clear()
         if(self.backendsComboBox.currentIndex() == 0):
+            ibmapi.updateProvider(0)
             for i in self._cloudServers:
                 self.backendsListWidget.addItem(str(i))
         else:
+            ibmapi.updateProvider(1)
             for i in self._localServers:
                 self.backendsListWidget.addItem(str(i))
 
@@ -139,9 +159,14 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
 
         if self.backendsComboBox.currentIndex() == 1:
             self.queueLabelValue.setText("0")
-            self.systemLabelValue.setText("Online")
+            self.systemLabelValue.setText("active")
         else:
-            pass
+            self.updateStatus(self._backend)
+
+    def updateStatus(self, backsys):
+        self.systemLabelValue.setText(ibmapi.getServerStatus(backsys))
+        self.queueLabelValue.setText(str(ibmapi.getPendingJobs(backsys)))
+
 
 def main():
     app = QtWidgets.QApplication(sys.argv)

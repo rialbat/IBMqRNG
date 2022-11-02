@@ -35,6 +35,13 @@ def getCloudServers():
     global provider
     return provider.backends()
 
+def updateProvider(status):
+    global provider
+    if status == 0:
+        provider = IBMQ.get_provider('ibm-q')
+    else:
+        provider = qiskit.BasicAer
+
 def getLocalServers():
     return qiskit.Aer.backends()
 
@@ -48,11 +55,26 @@ def createCircuit(n):
 
 def createRequest(qbits, backend, shots):
     simulator = provider.get_backend(backend)
+
     circ = transpile(createCircuit(qbits), simulator)
 
     result = simulator.run(circ, shots=shots, memory=True).result()
     return result
 
+def getServerStatus(backsys):
+    global provider
+    backend = provider.get_backend(backsys)
+    return backend.status().status_msg
+
+def getServerStatus(backsys):
+    global provider
+    backend = provider.get_backend(backsys)
+    return backend.status().status_msg
+
+def getPendingJobs(backsys):
+    global provider
+    backend = provider.get_backend(backsys)
+    return backend.status().pending_jobs
 
 
 
