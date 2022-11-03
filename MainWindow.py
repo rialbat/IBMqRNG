@@ -441,6 +441,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.distribPushButton = QPushButton(self.groupBox_4)
         self.distribPushButton.setObjectName(u"distribPushButton")
+        self.distribPushButton.setEnabled(False)
         self.distribPushButton.setMinimumSize(QSize(204, 30))
         self.distribPushButton.setMaximumSize(QSize(204, 30))
 
@@ -448,6 +449,7 @@ class Ui_MainWindow(object):
 
         self.bitmapPushButton = QPushButton(self.groupBox_4)
         self.bitmapPushButton.setObjectName(u"bitmapPushButton")
+        self.bitmapPushButton.setEnabled(False)
         self.bitmapPushButton.setMinimumSize(QSize(204, 30))
         self.bitmapPushButton.setMaximumSize(QSize(204, 30))
 

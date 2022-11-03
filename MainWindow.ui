@@ -569,6 +569,9 @@ QMenu::item:selected
               <layout class="QVBoxLayout" name="verticalLayout_5">
                <item>
                 <widget class="QPushButton" name="distribPushButton">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
                  <property name="minimumSize">
                   <size>
                    <width>204</width>
@@ -588,6 +591,9 @@ QMenu::item:selected
                </item>
                <item>
                 <widget class="QPushButton" name="bitmapPushButton">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
                  <property name="minimumSize">
                   <size>
                    <width>204</width>

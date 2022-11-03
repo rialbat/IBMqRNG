@@ -1,4 +1,6 @@
 # IBM
+import math
+
 import ibmapi
 
 # System
@@ -13,10 +15,11 @@ from PySide6 import QtWidgets, QtCore, QtGui
 import MainWindow
 import AuthWindow
 
-#Network
-import requests
+# Plot
+from matplotlib import pyplot as plt
+from matplotlib.ticker import FuncFormatter
 
-programVersion = '0.3'
+programVersion = '0.4'
 
 
 class AuthUI(QtWidgets.QDialog, AuthWindow.Ui_Dialog):
@@ -87,20 +90,23 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.qbitsSpinBox.valueChanged.connect(self.updateQbitsStatus)
         self.clearPushButton.clicked.connect(self.clearResult)
         self.startPushButton.clicked.connect(self.startAsync)
+        self.distribPushButton.clicked.connect(self.showHist)
         self.actionSave_result.triggered.connect(self.saveToFile)
         self.backendsListWidget.itemSelectionChanged.connect(self.selectBackend)
         self._model = QtGui.QStandardItemModel()
+        self._modelFreq = QtGui.QStandardItemModel()
         self.tableInit()
 
         self._shots = 20000
         self._qbits = 1
+        self._maxQbits = 1
         self._threads = 1
         self._backend = ""
         self._cloudServers = ibmapi.getCloudServers()
         self._localServers = ibmapi.getLocalServers()
         self.shotsLabelStatusValue.setText(str(self.shotsSpinBox.value()))
         self.threadsLabelStatusValue.setText(str(self.threadsSpinBox.value()))
-        self.qbitsLabelStatusValue.setText(str(self.qbitsSpinBox.value()))
+        self.qbitsLabelStatusValue.setText("1/1")
 
         self.updateServers()
 
@@ -128,15 +134,13 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
 
     def clearResult(self):
         self._resultsList.clear()
-        self._model.clear()
-        self.updateQbitsStatus()
+        self._model.setRowCount(0)
 
 
     def saveToFile(self):
         savePath = QtWidgets.QFileDialog.getSaveFileName(
             self, 'Save File', '', 'TXT(*.txt)')
         saveFile = QtCore.QFile(savePath[0])
-        result = ""
 
         if savePath[0]:
             if saveFile.open(QtCore.QFile.WriteOnly | QtCore.QFile.Truncate):
@@ -173,7 +177,7 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self._threads = self.threadsSpinBox.value()
 
     def updateQbitsStatus(self):
-        self.qbitsLabelStatusValue.setText(str(self.qbitsSpinBox.value()))
+        self.qbitsLabelStatusValue.setText(str(self.qbitsSpinBox.value()) + "/" + str(self._maxQbits))
         self._qbits = self.qbitsSpinBox.value()
 
         self._model.clear()
@@ -186,6 +190,8 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.qbitsSpinBox.setEnabled(False)
         self.startPushButton.setEnabled(False)
         self.clearPushButton.setEnabled(False)
+        self.distribPushButton.setEnabled(False)
+        self.bitmapPushButton.setEnabled(False)
 
     def enGUIEl(self):
         self.shotsSpinBox.setEnabled(True)
@@ -193,17 +199,23 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.qbitsSpinBox.setEnabled(True)
         self.startPushButton.setEnabled(True)
         self.clearPushButton.setEnabled(True)
+        self.distribPushButton.setEnabled(True)
+        self.bitmapPushButton.setEnabled(True)
 
     def startAsync(self):
         self.disGUIEl()
 
         self._resultsList.append(ibmapi.createRequest(self._qbits, self._backend, self._shots))
         self.fillTable()
+        self.freqTable()
 
         self.enGUIEl()
 
     def selectBackend(self):
         self._backend = self.backendsListWidget.currentItem().text()
+        self._maxQbits = ibmapi.getServerQbits(self._backend)
+        self.qbitsSpinBox.setMaximum(self._maxQbits)
+        self.updateQbitsStatus()
         self.startPushButton.setEnabled(True)
 
         if self.backendsComboBox.currentIndex() == 1:
@@ -215,6 +227,31 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
     def updateStatus(self, backsys):
         self.systemLabelValue.setText(ibmapi.getServerStatus(backsys))
         self.queueLabelValue.setText(str(ibmapi.getPendingJobs(backsys)))
+
+    def freqTable(self):
+        headerSeq = [i for i in range(int(math.pow(2, self._qbits)))]
+        headersLabels = [bin(headerSeq[i])[2:].zfill(self._qbits) for i in range(len(headerSeq))]
+        countDic = self._resultsList[-1].get_counts()
+
+        self._modelFreq.setVerticalHeaderLabels(headersLabels)
+        self._modelFreq.setHorizontalHeaderLabels(["Counts"])
+        self.statTableView.setModel(self._modelFreq)
+        for i in range(len(headerSeq)):
+            itemQ = QtGui.QStandardItem(str(countDic[headersLabels[i]]))
+            itemQ.setTextAlignment(QtCore.Qt.AlignCenter)  # type: ignore
+            self._modelFreq.setItem(i, 0, itemQ)
+
+    def showHist(self):
+        dictionary = self._resultsList[-1].get_counts()
+        labels = list(dictionary.keys())
+        for i in range(len(dictionary)):
+            labels[i] = bin(int(labels[i]))[2:].zfill(self._qbits)
+        formatter = FuncFormatter(lambda y, pos: "%1.1f%%" % (y))
+        fig, ax = plt.subplots()
+        ax.yaxis.set_major_formatter(formatter)
+        plt.bar(labels, dictionary.values(), color='g')
+        plt.xticks(rotation=45)
+        plt.show()
 
 
 def main():

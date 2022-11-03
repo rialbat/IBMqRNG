@@ -71,6 +71,11 @@ def getServerStatus(backsys):
     backend = provider.get_backend(backsys)
     return backend.status().status_msg
 
+def getServerQbits(backsys):
+    global provider
+    backend = provider.get_backend(backsys)
+    return backend.configuration().n_qubits
+
 def getPendingJobs(backsys):
     global provider
     backend = provider.get_backend(backsys)
