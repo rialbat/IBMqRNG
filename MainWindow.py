@@ -10,10 +10,11 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QGridLayout, QGroupBox,
-    QHBoxLayout, QLabel, QListView, QListWidget,
+    QHBoxLayout, QHeaderView, QLabel, QListWidget,
     QListWidgetItem, QMainWindow, QMenu, QMenuBar,
     QPushButton, QSizePolicy, QSpacerItem, QSpinBox,
-    QStatusBar, QTabWidget, QVBoxLayout, QWidget)
+    QStatusBar, QTabWidget, QTableView, QVBoxLayout,
+    QWidget)
 
 from custommenu import CustomMenu
 import Icon_rc
@@ -96,9 +97,85 @@ class Ui_MainWindow(object):
 "	font-size:15px;\n"
 "	font-family:Century Gothic, sans-serif;\n"
 "	color:rgb(255,255,255);\n"
+"}\n"
+"#distribPushButton\n"
+"{\n"
+"	background:rgb(0,133,252);\n"
+"	border-radius:4px;\n"
+"	font-size:15px;\n"
+"	font-family:Century Gothic, sans-serif;\n"
+"	color:rgb(255,255,255);\n"
+"}\n"
+"#distribPushButton:pressed\n"
+"{\n"
+"	background:rgb(0,122,228);\n"
+"	border-radius:4px;\n"
+"	font-size:15px;\n"
+"	font-family:Century Gothic, sans-serif;\n"
+"	color:rgb(255,255,255);\n"
+"}\n"
+"#distribPushButton:disabled\n"
+"{\n"
+"	background:rgb(143,188,228);\n"
+"	border-radius:4px;\n"
+"	font-size:15px;\n"
+"	font-family:Century Gothic, sans-serif;\n"
+"	color:rgb(255,255,255);\n"
+"}\n"
+""
+                        "#bitmapPushButton\n"
+"{\n"
+"	background:rgb(0,133,252);\n"
+"	border-radius:4px;\n"
+"	font-size:15px;\n"
+"	font-family:Century Gothic, sans-serif;\n"
+"	color:rgb(255,255,255);\n"
+"}\n"
+"#bitmapPushButton:pressed\n"
+"{\n"
+"	background:rgb(0,122,228);\n"
+"	border-radius:4px;\n"
+"	font-size:15px;\n"
+"	font-family:Century Gothic, sans-serif;\n"
+"	color:rgb(255,255,255);\n"
+"}\n"
+"#bitmapPushButton:disabled\n"
+"{\n"
+"	background:rgb(143,188,228);\n"
+"	border-radius:4px;\n"
+"	font-size:15px;\n"
+"	font-family:Century Gothic, sans-serif;\n"
+"	color:rgb(255,255,255);\n"
+"}\n"
+"#clearPushButton\n"
+"{\n"
+"	background:rgb(0,133,252);\n"
+"	border-radius:4px;\n"
+"	font-size:15px;\n"
+"	font-family:Century Gothic, sans-serif;\n"
+"	color:rgb(255,255,255);\n"
+"}\n"
+"#clearPushButton:pressed\n"
+"{\n"
+"	background:rgb(0,122,228);\n"
+"	border-radius:4px;\n"
+"	font-size:15px;\n"
+"	font-family:Century Gothic, sans-serif;\n"
+"	color:rgb(255,255,255);\n"
+"}\n"
+"#clearPushButton:disabled\n"
+"{\n"
+"	background:rgb(143,188,228);\n"
+"	bord"
+                        "er-radius:4px;\n"
+"	font-size:15px;\n"
+"	font-family:Century Gothic, sans-serif;\n"
+"	color:rgb(255,255,255);\n"
 "}")
         self.actionExit = QAction(MainWindow)
         self.actionExit.setObjectName(u"actionExit")
+        self.actionSave_result = QAction(MainWindow)
+        self.actionSave_result.setObjectName(u"actionSave_result")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout_4 = QGridLayout(self.centralwidget)
@@ -136,13 +213,13 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_8.addWidget(self.groupBox)
 
-        self.resultListView = QListView(self.Generator)
-        self.resultListView.setObjectName(u"resultListView")
+        self.resultTableView = QTableView(self.Generator)
+        self.resultTableView.setObjectName(u"resultTableView")
 
-        self.horizontalLayout_8.addWidget(self.resultListView)
+        self.horizontalLayout_8.addWidget(self.resultTableView)
 
-        self.verticalLayout_4 = QVBoxLayout()
-        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.verticalLayout_6 = QVBoxLayout()
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.groupBox_2 = QGroupBox(self.Generator)
         self.groupBox_2.setObjectName(u"groupBox_2")
         self.gridLayout_3 = QGridLayout(self.groupBox_2)
@@ -209,7 +286,7 @@ class Ui_MainWindow(object):
         self.gridLayout_3.addLayout(self.verticalLayout_3, 0, 0, 1, 1)
 
 
-        self.verticalLayout_4.addWidget(self.groupBox_2)
+        self.verticalLayout_6.addWidget(self.groupBox_2)
 
         self.groupBox_3 = QGroupBox(self.Generator)
         self.groupBox_3.setObjectName(u"groupBox_3")
@@ -317,7 +394,16 @@ class Ui_MainWindow(object):
         self.gridLayout_2.addItem(self.verticalSpacer, 1, 0, 1, 1)
 
 
-        self.verticalLayout_4.addWidget(self.groupBox_3)
+        self.verticalLayout_6.addWidget(self.groupBox_3)
+
+        self.verticalLayout_4 = QVBoxLayout()
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.clearPushButton = QPushButton(self.Generator)
+        self.clearPushButton.setObjectName(u"clearPushButton")
+        self.clearPushButton.setEnabled(False)
+        self.clearPushButton.setMinimumSize(QSize(0, 30))
+
+        self.verticalLayout_4.addWidget(self.clearPushButton)
 
         self.startPushButton = QPushButton(self.Generator)
         self.startPushButton.setObjectName(u"startPushButton")
@@ -327,7 +413,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.addWidget(self.startPushButton)
 
 
-        self.horizontalLayout_8.addLayout(self.verticalLayout_4)
+        self.verticalLayout_6.addLayout(self.verticalLayout_4)
+
+
+        self.horizontalLayout_8.addLayout(self.verticalLayout_6)
 
 
         self.gridLayout_5.addLayout(self.horizontalLayout_8, 0, 0, 1, 1)
@@ -335,6 +424,48 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.Generator, "")
         self.Statistics = QWidget()
         self.Statistics.setObjectName(u"Statistics")
+        self.gridLayout_7 = QGridLayout(self.Statistics)
+        self.gridLayout_7.setObjectName(u"gridLayout_7")
+        self.horizontalLayout_9 = QHBoxLayout()
+        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.statTableView = QTableView(self.Statistics)
+        self.statTableView.setObjectName(u"statTableView")
+
+        self.horizontalLayout_9.addWidget(self.statTableView)
+
+        self.groupBox_4 = QGroupBox(self.Statistics)
+        self.groupBox_4.setObjectName(u"groupBox_4")
+        self.gridLayout_6 = QGridLayout(self.groupBox_4)
+        self.gridLayout_6.setObjectName(u"gridLayout_6")
+        self.verticalLayout_5 = QVBoxLayout()
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.distribPushButton = QPushButton(self.groupBox_4)
+        self.distribPushButton.setObjectName(u"distribPushButton")
+        self.distribPushButton.setMinimumSize(QSize(204, 30))
+        self.distribPushButton.setMaximumSize(QSize(204, 30))
+
+        self.verticalLayout_5.addWidget(self.distribPushButton)
+
+        self.bitmapPushButton = QPushButton(self.groupBox_4)
+        self.bitmapPushButton.setObjectName(u"bitmapPushButton")
+        self.bitmapPushButton.setMinimumSize(QSize(204, 30))
+        self.bitmapPushButton.setMaximumSize(QSize(204, 30))
+
+        self.verticalLayout_5.addWidget(self.bitmapPushButton)
+
+
+        self.gridLayout_6.addLayout(self.verticalLayout_5, 0, 0, 1, 1)
+
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.gridLayout_6.addItem(self.verticalSpacer_2, 1, 0, 1, 1)
+
+
+        self.horizontalLayout_9.addWidget(self.groupBox_4)
+
+
+        self.gridLayout_7.addLayout(self.horizontalLayout_9, 0, 0, 1, 1)
+
         self.tabWidget.addTab(self.Statistics, "")
 
         self.gridLayout_4.addWidget(self.tabWidget, 0, 0, 1, 1)
@@ -354,6 +485,7 @@ class Ui_MainWindow(object):
 
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuAbout.menuAction())
+        self.menuFile.addAction(self.actionSave_result)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionExit)
 
@@ -369,6 +501,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"IBMqRNG", None))
         self.actionExit.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
+        self.actionSave_result.setText(QCoreApplication.translate("MainWindow", u"Save bit sequence", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"Backends", None))
         self.backendsComboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"Cloud backends", None))
         self.backendsComboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"Local backends", None))
@@ -388,8 +521,12 @@ class Ui_MainWindow(object):
         self.qbitsLabelStatusValue.setText(QCoreApplication.translate("MainWindow", u"Waiting...", None))
         self.threadsLabelStatus.setText(QCoreApplication.translate("MainWindow", u"Number of threads:", None))
         self.threadsLabelStatusValue.setText(QCoreApplication.translate("MainWindow", u"Waiting...", None))
+        self.clearPushButton.setText(QCoreApplication.translate("MainWindow", u"Clear results", None))
         self.startPushButton.setText(QCoreApplication.translate("MainWindow", u"Start", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.Generator), QCoreApplication.translate("MainWindow", u"Generator", None))
+        self.groupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"Options", None))
+        self.distribPushButton.setText(QCoreApplication.translate("MainWindow", u"Show distribution", None))
+        self.bitmapPushButton.setText(QCoreApplication.translate("MainWindow", u"Show bitmap", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.Statistics), QCoreApplication.translate("MainWindow", u"Statistics", None))
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuAbout.setTitle(QCoreApplication.translate("MainWindow", u"About", None))

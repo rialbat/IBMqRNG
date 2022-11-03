@@ -85,7 +85,9 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.shotsSpinBox.valueChanged.connect(self.updateShotsStatus)
         self.threadsSpinBox.valueChanged.connect(self.updateThreadsStatus)
         self.qbitsSpinBox.valueChanged.connect(self.updateQbitsStatus)
+        self.clearPushButton.clicked.connect(self.clearResult)
         self.startPushButton.clicked.connect(self.startAsync)
+        self.actionSave_result.triggered.connect(self.saveToFile)
         self.backendsListWidget.itemSelectionChanged.connect(self.selectBackend)
         self._model = QtGui.QStandardItemModel()
         self.tableInit()
@@ -106,14 +108,46 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
 
 
     def tableInit(self):
-        headersLabels = ["Q1", "Q2"]
+        headersLabels = ["Q0"]
 
         self._model.setHorizontalHeaderLabels(headersLabels)
-        self.resultListView.setModel(self._model)
-        self.resultListView.show()
-        # self.resultListView.resizeRowsToContents()
-        # self.resultListView.horizontalHeader().setDefaultAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.TextWordWrap) # type: ignore
+        self.resultTableView.setModel(self._model)
 
+    def fillTable(self):
+        self._model.removeRows(0, self._model.rowCount())
+        posY = -1
+        for i in self._resultsList:
+            for j in i.get_memory():
+                posX = 0
+                posY = posY + 1
+                for s in j:
+                    itemQ = QtGui.QStandardItem(str(s))
+                    itemQ.setTextAlignment(QtCore.Qt.AlignCenter)  # type: ignore
+                    self._model.setItem(posY, posX, itemQ)
+                    posX = posX + 1
+
+    def clearResult(self):
+        self._resultsList.clear()
+        self._model.clear()
+        self.updateQbitsStatus()
+
+
+    def saveToFile(self):
+        savePath = QtWidgets.QFileDialog.getSaveFileName(
+            self, 'Save File', '', 'TXT(*.txt)')
+        saveFile = QtCore.QFile(savePath[0])
+        result = ""
+
+        if savePath[0]:
+            if saveFile.open(QtCore.QFile.WriteOnly | QtCore.QFile.Truncate):
+                result = QtCore.QTextStream(saveFile)
+                for i in self._resultsList:
+                    for j in i.get_memory():
+                        for z in j:
+                            result << str(z)
+
+            QtWidgets.QMessageBox.information(self, "Save result",
+                                              "Success!")
 
     def aboutMessage(self):
         QtWidgets.QMessageBox.about(self, "About",
@@ -142,16 +176,31 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.qbitsLabelStatusValue.setText(str(self.qbitsSpinBox.value()))
         self._qbits = self.qbitsSpinBox.value()
 
-    def startAsync(self):
-        # Disable all buttons
+        self._model.clear()
+        headersLabels = [f"Q{x}" for x in range(self._qbits)]
+        self._model.setHorizontalHeaderLabels(headersLabels)
+
+    def disGUIEl(self):
         self.shotsSpinBox.setEnabled(False)
         self.threadsSpinBox.setEnabled(False)
         self.qbitsSpinBox.setEnabled(False)
         self.startPushButton.setEnabled(False)
+        self.clearPushButton.setEnabled(False)
+
+    def enGUIEl(self):
+        self.shotsSpinBox.setEnabled(True)
+        self.threadsSpinBox.setEnabled(True)
+        self.qbitsSpinBox.setEnabled(True)
+        self.startPushButton.setEnabled(True)
+        self.clearPushButton.setEnabled(True)
+
+    def startAsync(self):
+        self.disGUIEl()
 
         self._resultsList.append(ibmapi.createRequest(self._qbits, self._backend, self._shots))
-        # memory = result.get_memory(circ)
-        print(self._resultsList[0])
+        self.fillTable()
+
+        self.enGUIEl()
 
     def selectBackend(self):
         self._backend = self.backendsListWidget.currentItem().text()
