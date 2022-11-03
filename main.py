@@ -1,11 +1,11 @@
 # IBM
-import math
-
 import ibmapi
 
 # System
 import sys
 import os.path
+import math
+import numpy
 
 # RegEx
 import re
@@ -18,6 +18,7 @@ import AuthWindow
 # Plot
 from matplotlib import pyplot as plt
 from matplotlib.ticker import FuncFormatter
+from matplotlibwidget import MatplotlibWidget
 
 programVersion = '0.4'
 
@@ -112,6 +113,10 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
 
         self._resultsList = []
 
+    def init_widget(self):
+        self.matplotWidget = MatplotlibWidget()
+        self.layoutVertical = QtWidgets.QVBoxLayout(self.canvasWidget)
+        self.layoutVertical.addWidget(self.matplotWidget)
 
     def tableInit(self):
         headersLabels = ["Q0"]
@@ -242,7 +247,7 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
             self._modelFreq.setItem(i, 0, itemQ)
 
     def showHist(self):
-        dictionary = self._resultsList[-1].get_counts()
+        """dictionary = self._resultsList[-1].get_counts()
         dictionarySum = sum(dictionary.values())
         dictionaryPercent = dictionary
 
@@ -255,7 +260,34 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         plt.bar(labels, dictionary.values(), color='g')
         plt.title("Frequency distribution")
         plt.xticks(rotation=45)
-        plt.show()
+        plt.show()"""
+        self.init_widget()
+
+        dictionary = self._resultsList[-1].get_counts()
+        dictionarySum = sum(dictionary.values())
+        dictionaryPercent = dictionary
+
+        for i in dictionary:
+            dictionaryPercent[i] = dictionary[i] / dictionarySum * 100
+        labels = list(dictionaryPercent.keys())
+        formatter = FuncFormatter(lambda y, pos: "%1.1f%%" % (y))
+        self.matplotWidget.ax.yaxis.set_major_formatter(formatter)
+        self.matplotWidget.ax.bar(labels, dictionary.values(), color='g')
+        # self.matplotWidget.ax.title("Frequency distribution")
+        self.matplotWidget.ax.xticks(rotation=45)
+        self.matplotWidget.canvas.draw()
+
+
+        """Example:
+        self.matplotWidget.axis.clear()
+        x = numpy.random.random(10)
+        y = numpy.random.random(10)
+        text = ["P1", "P2", "P3", "P4", "P5"]
+        self.matplotWidget.axis.scatter(x, y)
+        for index, txt in enumerate(text):
+            self.matplotWidget.axis.annotate(txt, (x[index], y[index]))
+        self.matplotWidget.canvas.draw()"""
+
 
 
 def main():

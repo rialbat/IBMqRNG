@@ -159,7 +159,13 @@ QMenu::item:selected
 	font-size:15px;
 	font-family:Century Gothic, sans-serif;
 	color:rgb(255,255,255);
-}</string>
+}
+#canvasWidget
+{
+     border-style: solid;
+     border-width: 1px;
+     border-color: #DCDCDC;
+ }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_4">
@@ -557,10 +563,38 @@ QMenu::item:selected
         <item row="0" column="0">
          <layout class="QHBoxLayout" name="horizontalLayout_9">
           <item>
-           <widget class="QTableView" name="statTableView"/>
+           <widget class="QTableView" name="statTableView">
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>200</width>
+              <height>16777215</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="canvasWidget" native="true"/>
           </item>
           <item>
            <widget class="QGroupBox" name="groupBox_4">
+            <property name="minimumSize">
+             <size>
+              <width>227</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>227</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="title">
              <string>Options</string>
             </property>

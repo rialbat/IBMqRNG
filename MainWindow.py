@@ -171,7 +171,13 @@ class Ui_MainWindow(object):
 "	font-size:15px;\n"
 "	font-family:Century Gothic, sans-serif;\n"
 "	color:rgb(255,255,255);\n"
-"}")
+"}\n"
+"#canvasWidget\n"
+"{\n"
+"     border-style: solid;\n"
+"     border-width: 1px;\n"
+"     border-color: #DCDCDC;\n"
+" }")
         self.actionExit = QAction(MainWindow)
         self.actionExit.setObjectName(u"actionExit")
         self.actionSave_result = QAction(MainWindow)
@@ -430,11 +436,20 @@ class Ui_MainWindow(object):
         self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
         self.statTableView = QTableView(self.Statistics)
         self.statTableView.setObjectName(u"statTableView")
+        self.statTableView.setMinimumSize(QSize(200, 0))
+        self.statTableView.setMaximumSize(QSize(200, 16777215))
 
         self.horizontalLayout_9.addWidget(self.statTableView)
 
+        self.canvasWidget = QWidget(self.Statistics)
+        self.canvasWidget.setObjectName(u"canvasWidget")
+
+        self.horizontalLayout_9.addWidget(self.canvasWidget)
+
         self.groupBox_4 = QGroupBox(self.Statistics)
         self.groupBox_4.setObjectName(u"groupBox_4")
+        self.groupBox_4.setMinimumSize(QSize(227, 0))
+        self.groupBox_4.setMaximumSize(QSize(227, 16777215))
         self.gridLayout_6 = QGridLayout(self.groupBox_4)
         self.gridLayout_6.setObjectName(u"gridLayout_6")
         self.verticalLayout_5 = QVBoxLayout()
