@@ -243,13 +243,17 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
 
     def showHist(self):
         dictionary = self._resultsList[-1].get_counts()
-        labels = list(dictionary.keys())
-        for i in range(len(dictionary)):
-            labels[i] = bin(int(labels[i]))[2:].zfill(self._qbits)
+        dictionarySum = sum(dictionary.values())
+        dictionaryPercent = dictionary
+
+        for i in dictionary:
+            dictionaryPercent[i] = dictionary[i]/dictionarySum * 100
+        labels = list(dictionaryPercent.keys())
         formatter = FuncFormatter(lambda y, pos: "%1.1f%%" % (y))
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(num='Distribution')
         ax.yaxis.set_major_formatter(formatter)
         plt.bar(labels, dictionary.values(), color='g')
+        plt.title("Frequency distribution")
         plt.xticks(rotation=45)
         plt.show()
 
