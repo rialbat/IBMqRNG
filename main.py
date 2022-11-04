@@ -5,7 +5,6 @@ import ibmapi
 import sys
 import os.path
 import math
-import numpy
 
 # RegEx
 import re
@@ -20,7 +19,10 @@ from matplotlib import pyplot as plt
 from matplotlib.ticker import FuncFormatter
 from matplotlibwidget import MatplotlibWidget
 
-programVersion = '0.4'
+# BitMap
+from bitmapwidget import BitMapWidget
+
+programVersion = '0.5'
 
 
 class AuthUI(QtWidgets.QDialog, AuthWindow.Ui_Dialog):
@@ -92,6 +94,8 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.clearPushButton.clicked.connect(self.clearResult)
         self.startPushButton.clicked.connect(self.startAsync)
         self.distribPushButton.clicked.connect(self.showHist)
+        self.externalDistribPushButton.clicked.connect(self.showHistExternal)
+        self.bitmapPushButton.clicked.connect(self.showBitMap)
         self.actionSave_result.triggered.connect(self.saveToFile)
         self.backendsListWidget.itemSelectionChanged.connect(self.selectBackend)
         self._model = QtGui.QStandardItemModel()
@@ -109,14 +113,26 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.threadsLabelStatusValue.setText(str(self.threadsSpinBox.value()))
         self.qbitsLabelStatusValue.setText("1/1")
 
+        self.plotExist = False
+        self.canvasExist = False
+        self.layoutVerticalPlot = QtWidgets.QVBoxLayout(self.plotWidget)
+        self.layoutVerticalCanvas = QtWidgets.QVBoxLayout(self.canvasWidget)
+
         self.updateServers()
 
         self._resultsList = []
 
-    def init_widget(self):
-        self.matplotWidget = MatplotlibWidget()
-        self.layoutVertical = QtWidgets.QVBoxLayout(self.canvasWidget)
-        self.layoutVertical.addWidget(self.matplotWidget)
+    def initPlotWidget(self):
+        if not self.plotExist:
+            self.matplotWidget = MatplotlibWidget()
+            self.layoutVerticalPlot.addWidget(self.matplotWidget)
+            self.plotExist = True
+
+    def initBitMapWidget(self):
+        if not self.canvasExist:
+            self.bitMapWidget = BitMapWidget(self._resultsList[-1].get_memory())
+            self.layoutVerticalCanvas.addWidget(self.bitMapWidget)
+            self.canvasExist = True
 
     def tableInit(self):
         headersLabels = ["Q0"]
@@ -140,6 +156,7 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
     def clearResult(self):
         self._resultsList.clear()
         self._model.setRowCount(0)
+        self._modelFreq.setRowCount(0)
 
 
     def saveToFile(self):
@@ -196,6 +213,7 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.startPushButton.setEnabled(False)
         self.clearPushButton.setEnabled(False)
         self.distribPushButton.setEnabled(False)
+        self.externalDistribPushButton.setEnabled(False)
         self.bitmapPushButton.setEnabled(False)
 
     def enGUIEl(self):
@@ -205,6 +223,7 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.startPushButton.setEnabled(True)
         self.clearPushButton.setEnabled(True)
         self.distribPushButton.setEnabled(True)
+        self.externalDistribPushButton.setEnabled(True)
         self.bitmapPushButton.setEnabled(True)
 
     def startAsync(self):
@@ -247,7 +266,26 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
             self._modelFreq.setItem(i, 0, itemQ)
 
     def showHist(self):
-        """dictionary = self._resultsList[-1].get_counts()
+        self.initPlotWidget()
+        self.tabWidget_2.setCurrentIndex(0)
+
+        dictionary = self._resultsList[-1].get_counts()
+        dictionarySum = sum(dictionary.values())
+        dictionaryPercent = dictionary
+
+        for i in dictionary:
+            dictionaryPercent[i] = dictionary[i] / dictionarySum * 100
+        labels = list(dictionaryPercent.keys())
+        formatter = FuncFormatter(lambda y, pos: "%1.1f%%" % (y))
+        self.matplotWidget.ax.yaxis.set_major_formatter(formatter)
+        self.matplotWidget.ax.bar(labels, dictionary.values(), color='g')
+        self.matplotWidget.ax.set_title("Frequency distribution")
+        for tick in self.matplotWidget.ax.get_xticklabels():
+            tick.set_rotation(45)
+        self.matplotWidget.canvas.draw()
+
+    def showHistExternal(self):
+        dictionary = self._resultsList[-1].get_counts()
         dictionarySum = sum(dictionary.values())
         dictionaryPercent = dictionary
 
@@ -260,34 +298,11 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         plt.bar(labels, dictionary.values(), color='g')
         plt.title("Frequency distribution")
         plt.xticks(rotation=45)
-        plt.show()"""
-        self.init_widget()
+        plt.show()
 
-        dictionary = self._resultsList[-1].get_counts()
-        dictionarySum = sum(dictionary.values())
-        dictionaryPercent = dictionary
-
-        for i in dictionary:
-            dictionaryPercent[i] = dictionary[i] / dictionarySum * 100
-        labels = list(dictionaryPercent.keys())
-        formatter = FuncFormatter(lambda y, pos: "%1.1f%%" % (y))
-        self.matplotWidget.ax.yaxis.set_major_formatter(formatter)
-        self.matplotWidget.ax.bar(labels, dictionary.values(), color='g')
-        # self.matplotWidget.ax.title("Frequency distribution")
-        self.matplotWidget.ax.xticks(rotation=45)
-        self.matplotWidget.canvas.draw()
-
-
-        """Example:
-        self.matplotWidget.axis.clear()
-        x = numpy.random.random(10)
-        y = numpy.random.random(10)
-        text = ["P1", "P2", "P3", "P4", "P5"]
-        self.matplotWidget.axis.scatter(x, y)
-        for index, txt in enumerate(text):
-            self.matplotWidget.axis.annotate(txt, (x[index], y[index]))
-        self.matplotWidget.canvas.draw()"""
-
+    def showBitMap(self):
+        self.initBitMapWidget()
+        self.tabWidget_2.setCurrentIndex(1)
 
 
 def main():
@@ -303,9 +318,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-"""
-TODO:
-1. Func to QTool Button
-2. Table to Statistics
-"""

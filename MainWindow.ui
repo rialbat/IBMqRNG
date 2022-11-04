@@ -165,6 +165,36 @@ QMenu::item:selected
      border-style: solid;
      border-width: 1px;
      border-color: #DCDCDC;
+ }
+#externalDistribPushButton
+{
+	background:rgb(0,133,252);
+	border-radius:4px;
+	font-size:15px;
+	font-family:Century Gothic, sans-serif;
+	color:rgb(255,255,255);
+}
+#externalDistribPushButton:pressed
+{
+	background:rgb(0,122,228);
+	border-radius:4px;
+	font-size:15px;
+	font-family:Century Gothic, sans-serif;
+	color:rgb(255,255,255);
+}
+#externalDistribPushButton:disabled
+{
+	background:rgb(143,188,228);
+	border-radius:4px;
+	font-size:15px;
+	font-family:Century Gothic, sans-serif;
+	color:rgb(255,255,255);
+}
+#plotWidget
+{
+     border-style: solid;
+     border-width: 1px;
+     border-color: #DCDCDC;
  }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -559,7 +589,7 @@ QMenu::item:selected
        <attribute name="title">
         <string>Statistics</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_7">
+       <layout class="QGridLayout" name="gridLayout_9">
         <item row="0" column="0">
          <layout class="QHBoxLayout" name="horizontalLayout_9">
           <item>
@@ -579,7 +609,31 @@ QMenu::item:selected
            </widget>
           </item>
           <item>
-           <widget class="QWidget" name="canvasWidget" native="true"/>
+           <widget class="QTabWidget" name="tabWidget_2">
+            <property name="currentIndex">
+             <number>0</number>
+            </property>
+            <widget class="QWidget" name="plotTab">
+             <attribute name="title">
+              <string>Distribution</string>
+             </attribute>
+             <layout class="QGridLayout" name="gridLayout_7">
+              <item row="0" column="0">
+               <widget class="QWidget" name="plotWidget" native="true"/>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="canvasTab">
+             <attribute name="title">
+              <string>Bitmap</string>
+             </attribute>
+             <layout class="QGridLayout" name="gridLayout_8">
+              <item row="0" column="0">
+               <widget class="QWidget" name="canvasWidget" native="true"/>
+              </item>
+             </layout>
+            </widget>
+           </widget>
           </item>
           <item>
            <widget class="QGroupBox" name="groupBox_4">
@@ -600,26 +654,73 @@ QMenu::item:selected
             </property>
             <layout class="QGridLayout" name="gridLayout_6">
              <item row="0" column="0">
-              <layout class="QVBoxLayout" name="verticalLayout_5">
+              <layout class="QVBoxLayout" name="verticalLayout_7">
                <item>
-                <widget class="QPushButton" name="distribPushButton">
-                 <property name="enabled">
-                  <bool>false</bool>
-                 </property>
+                <layout class="QVBoxLayout" name="verticalLayout_5">
+                 <item>
+                  <widget class="QPushButton" name="distribPushButton">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>204</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>204</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Show distribution</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="externalDistribPushButton">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>204</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>204</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>External view</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="Line" name="line">
                  <property name="minimumSize">
                   <size>
-                   <width>204</width>
-                   <height>30</height>
+                   <width>0</width>
+                   <height>10</height>
                   </size>
                  </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>204</width>
-                   <height>30</height>
-                  </size>
+                 <property name="font">
+                  <font>
+                   <bold>true</bold>
+                  </font>
                  </property>
-                 <property name="text">
-                  <string>Show distribution</string>
+                 <property name="lineWidth">
+                  <number>2</number>
+                 </property>
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
                  </property>
                 </widget>
                </item>

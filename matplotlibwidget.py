@@ -1,8 +1,7 @@
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
-from matplotlib.backends.backend_qtagg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 
-from PySide6.QtWidgets import QWidget, QApplication, QVBoxLayout
+from PySide6.QtWidgets import QWidget, QVBoxLayout
 
 __all__ = ['MatplotlibWidget']
 
