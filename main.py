@@ -1,5 +1,6 @@
 # IBM
 import ibmapi
+from qiskit import result
 
 # System
 import sys
@@ -22,7 +23,10 @@ from matplotlibwidget import MatplotlibWidget
 # BitMap
 from bitmapwidget import BitMapWidget
 
-programVersion = '0.5'
+# For Multithreading
+from worker import Worker
+
+programVersion = '1.0'
 
 
 class AuthUI(QtWidgets.QDialog, AuthWindow.Ui_Dialog):
@@ -96,17 +100,21 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.distribPushButton.clicked.connect(self.showHist)
         self.externalDistribPushButton.clicked.connect(self.showHistExternal)
         self.bitmapPushButton.clicked.connect(self.showBitMap)
+        self.resultsCheckBox.stateChanged.connect(self.checkBoxStatus)
         self.actionSave_result.triggered.connect(self.saveToFile)
         self.backendsListWidget.itemSelectionChanged.connect(self.selectBackend)
         self._model = QtGui.QStandardItemModel()
         self._modelFreq = QtGui.QStandardItemModel()
         self.tableInit()
 
+        self._threadPool = QtCore.QThreadPool()
+
         self._shots = 20000
         self._qbits = 1
         self._maxQbits = 1
         self._threads = 1
         self._backend = ""
+        self._showResults = False
         self._cloudServers = ibmapi.getCloudServers()
         self._localServers = ibmapi.getLocalServers()
         self.shotsLabelStatusValue.setText(str(self.shotsSpinBox.value()))
@@ -121,6 +129,15 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.updateServers()
 
         self._resultsList = []
+
+    @QtCore.Slot(result.result.Result)
+    def receiveResponse(self, serverResponse):
+        self._resultsList.append(serverResponse)
+        if self._showResults:
+            self.fillTable()
+        self.freqTable()
+
+        self.enGUIEl()
 
     def initPlotWidget(self):
         if not self.plotExist:
@@ -139,6 +156,9 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
 
         self._model.setHorizontalHeaderLabels(headersLabels)
         self.resultTableView.setModel(self._model)
+
+    def checkBoxStatus(self):
+        self._showResults = True if self.resultsCheckBox.checkState() == QtCore.Qt.CheckState.Checked else False
 
     def fillTable(self):
         self._model.removeRows(0, self._model.rowCount())
@@ -202,7 +222,7 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.qbitsLabelStatusValue.setText(str(self.qbitsSpinBox.value()) + "/" + str(self._maxQbits))
         self._qbits = self.qbitsSpinBox.value()
 
-        self._model.clear()
+        self._model.setRowCount(0)
         headersLabels = [f"Q{x}" for x in range(self._qbits)]
         self._model.setHorizontalHeaderLabels(headersLabels)
 
@@ -228,12 +248,12 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
 
     def startAsync(self):
         self.disGUIEl()
+        self._threadPool.setMaxThreadCount(self._threads)
 
-        self._resultsList.append(ibmapi.createRequest(self._qbits, self._backend, self._shots))
-        self.fillTable()
-        self.freqTable()
-
-        self.enGUIEl()
+        for thread in range(self._threads):
+            lWorker = Worker(self._qbits, self._backend, self._shots)
+            lWorker.signals.result.connect(self.receiveResponse)
+            self._threadPool.start(lWorker)
 
     def selectBackend(self):
         self._backend = self.backendsListWidget.currentItem().text()
@@ -253,6 +273,8 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.queueLabelValue.setText(str(ibmapi.getPendingJobs(backsys)))
 
     def freqTable(self):
+        self._modelFreq.setRowCount(0)
+
         headerSeq = [i for i in range(int(math.pow(2, self._qbits)))]
         headersLabels = [bin(headerSeq[i])[2:].zfill(self._qbits) for i in range(len(headerSeq))]
         countDic = self._resultsList[-1].get_counts()

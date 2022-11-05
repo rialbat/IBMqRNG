@@ -9,12 +9,12 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
-    QGroupBox, QHBoxLayout, QHeaderView, QLabel,
-    QListWidget, QListWidgetItem, QMainWindow, QMenu,
-    QMenuBar, QPushButton, QSizePolicy, QSpacerItem,
-    QSpinBox, QStatusBar, QTabWidget, QTableView,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFrame,
+    QGridLayout, QGroupBox, QHBoxLayout, QHeaderView,
+    QLabel, QListWidget, QListWidgetItem, QMainWindow,
+    QMenu, QMenuBar, QPushButton, QSizePolicy,
+    QSpacerItem, QSpinBox, QStatusBar, QTabWidget,
+    QTableView, QVBoxLayout, QWidget)
 
 from custommenu import CustomMenu
 import Icon_rc
@@ -328,6 +328,10 @@ class Ui_MainWindow(object):
         self.groupBox_3.setObjectName(u"groupBox_3")
         self.gridLayout_2 = QGridLayout(self.groupBox_3)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.gridLayout_2.addItem(self.verticalSpacer, 1, 0, 1, 1)
+
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.horizontalLayout = QHBoxLayout()
@@ -425,9 +429,10 @@ class Ui_MainWindow(object):
 
         self.gridLayout_2.addLayout(self.verticalLayout_2, 0, 0, 1, 1)
 
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.resultsCheckBox = QCheckBox(self.groupBox_3)
+        self.resultsCheckBox.setObjectName(u"resultsCheckBox")
 
-        self.gridLayout_2.addItem(self.verticalSpacer, 1, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.resultsCheckBox, 2, 0, 1, 1)
 
 
         self.verticalLayout_6.addWidget(self.groupBox_3)
@@ -614,6 +619,7 @@ class Ui_MainWindow(object):
         self.qbitsLabelStatusValue.setText(QCoreApplication.translate("MainWindow", u"Waiting...", None))
         self.threadsLabelStatus.setText(QCoreApplication.translate("MainWindow", u"Number of threads:", None))
         self.threadsLabelStatusValue.setText(QCoreApplication.translate("MainWindow", u"Waiting...", None))
+        self.resultsCheckBox.setText(QCoreApplication.translate("MainWindow", u"Show results in the table", None))
         self.clearPushButton.setText(QCoreApplication.translate("MainWindow", u"Clear results", None))
         self.startPushButton.setText(QCoreApplication.translate("MainWindow", u"Start", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.Generator), QCoreApplication.translate("MainWindow", u"Generator", None))
