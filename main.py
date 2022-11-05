@@ -115,11 +115,13 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self._threads = 1
         self._backend = ""
         self._showResults = False
+        self._currentJob = 0
         self._cloudServers = ibmapi.getCloudServers()
         self._localServers = ibmapi.getLocalServers()
         self.shotsLabelStatusValue.setText(str(self.shotsSpinBox.value()))
         self.threadsLabelStatusValue.setText(str(self.threadsSpinBox.value()))
         self.qbitsLabelStatusValue.setText("1/1")
+        self.jobsLabelStatusValue.setText("0/1")
 
         self.plotExist = False
         self.canvasExist = False
@@ -133,11 +135,19 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
     @QtCore.Slot(result.result.Result)
     def receiveResponse(self, serverResponse):
         self._resultsList.append(serverResponse)
+        self.updateJobsStatus()
         if self._showResults:
             self.fillTable()
         self.freqTable()
 
         self.enGUIEl()
+
+    def updateJobsStatus(self):
+        self._currentJob = self._currentJob + 1
+        self.jobsLabelStatusValue.setText(str(self._currentJob) + "/" + str(self._threads))
+        if self._currentJob == self._threads:
+            QtWidgets.QMessageBox.information(self, "Jobs' update",
+                                              "All jobs completed!")
 
     def initPlotWidget(self):
         if not self.plotExist:
@@ -217,12 +227,14 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
     def updateThreadsStatus(self):
         self.threadsLabelStatusValue.setText(str(self.threadsSpinBox.value()))
         self._threads = self.threadsSpinBox.value()
+        self.jobsLabelStatusValue.setText("0/" + str(self._threads))
 
     def updateQbitsStatus(self):
         self.qbitsLabelStatusValue.setText(str(self.qbitsSpinBox.value()) + "/" + str(self._maxQbits))
         self._qbits = self.qbitsSpinBox.value()
 
         self._model.setRowCount(0)
+        self._model.clear()
         headersLabels = [f"Q{x}" for x in range(self._qbits)]
         self._model.setHorizontalHeaderLabels(headersLabels)
 
@@ -247,6 +259,7 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.bitmapPushButton.setEnabled(True)
 
     def startAsync(self):
+        self._currentJob = 0
         self.disGUIEl()
         self._threadPool.setMaxThreadCount(self._threads)
 

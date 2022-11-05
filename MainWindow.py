@@ -24,6 +24,7 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(979, 486)
+        MainWindow.setMinimumSize(QSize(0, 0))
         icon = QIcon()
         icon.addFile(u":/images/icon.png", QSize(), QIcon.Normal, QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -324,14 +325,13 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_6.addWidget(self.groupBox_2)
 
+        self.verticalLayout_4 = QVBoxLayout()
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.groupBox_3 = QGroupBox(self.Generator)
         self.groupBox_3.setObjectName(u"groupBox_3")
+        self.groupBox_3.setMinimumSize(QSize(0, 0))
         self.gridLayout_2 = QGridLayout(self.groupBox_3)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.gridLayout_2.addItem(self.verticalSpacer, 1, 0, 1, 1)
-
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.horizontalLayout = QHBoxLayout()
@@ -426,19 +426,34 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_13)
 
+        self.horizontalLayout_14 = QHBoxLayout()
+        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
+        self.jobsLabelStatus = QLabel(self.groupBox_3)
+        self.jobsLabelStatus.setObjectName(u"jobsLabelStatus")
+        self.jobsLabelStatus.setMinimumSize(QSize(112, 0))
+        self.jobsLabelStatus.setMaximumSize(QSize(112, 16777215))
+
+        self.horizontalLayout_14.addWidget(self.jobsLabelStatus)
+
+        self.jobsLabelStatusValue = QLabel(self.groupBox_3)
+        self.jobsLabelStatusValue.setObjectName(u"jobsLabelStatusValue")
+
+        self.horizontalLayout_14.addWidget(self.jobsLabelStatusValue)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_14)
+
 
         self.gridLayout_2.addLayout(self.verticalLayout_2, 0, 0, 1, 1)
 
         self.resultsCheckBox = QCheckBox(self.groupBox_3)
         self.resultsCheckBox.setObjectName(u"resultsCheckBox")
 
-        self.gridLayout_2.addWidget(self.resultsCheckBox, 2, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.resultsCheckBox, 1, 0, 1, 1)
 
 
-        self.verticalLayout_6.addWidget(self.groupBox_3)
+        self.verticalLayout_4.addWidget(self.groupBox_3)
 
-        self.verticalLayout_4 = QVBoxLayout()
-        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.clearPushButton = QPushButton(self.Generator)
         self.clearPushButton.setObjectName(u"clearPushButton")
         self.clearPushButton.setEnabled(False)
@@ -619,6 +634,8 @@ class Ui_MainWindow(object):
         self.qbitsLabelStatusValue.setText(QCoreApplication.translate("MainWindow", u"Waiting...", None))
         self.threadsLabelStatus.setText(QCoreApplication.translate("MainWindow", u"Number of threads:", None))
         self.threadsLabelStatusValue.setText(QCoreApplication.translate("MainWindow", u"Waiting...", None))
+        self.jobsLabelStatus.setText(QCoreApplication.translate("MainWindow", u"Jobs' status:", None))
+        self.jobsLabelStatusValue.setText(QCoreApplication.translate("MainWindow", u"Waiting...", None))
         self.resultsCheckBox.setText(QCoreApplication.translate("MainWindow", u"Show results in the table", None))
         self.clearPushButton.setText(QCoreApplication.translate("MainWindow", u"Clear results", None))
         self.startPushButton.setText(QCoreApplication.translate("MainWindow", u"Start", None))
