@@ -26,7 +26,7 @@ from bitmapwidget import BitMapWidget
 # For Multithreading
 from worker import Worker
 
-programVersion = '1.0'
+programVersion = '1.1'
 
 
 class AuthUI(QtWidgets.QDialog, AuthWindow.Ui_Dialog):
@@ -100,6 +100,7 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.distribPushButton.clicked.connect(self.showHist)
         self.externalDistribPushButton.clicked.connect(self.showHistExternal)
         self.bitmapPushButton.clicked.connect(self.showBitMap)
+        self.frequencyPushButton.clicked.connect(self.checkFreq)
         self.resultsCheckBox.stateChanged.connect(self.checkBoxStatus)
         self.actionSave_result.triggered.connect(self.saveToFile)
         self.backendsListWidget.itemSelectionChanged.connect(self.selectBackend)
@@ -138,8 +139,6 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.updateJobsStatus()
         if self._showResults:
             self.fillTable()
-        self.freqTable()
-
         self.enGUIEl()
 
     def updateJobsStatus(self):
@@ -148,6 +147,7 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         if self._currentJob == self._threads:
             QtWidgets.QMessageBox.information(self, "Jobs' update",
                                               "All jobs completed!")
+            self.jobsLabelStatusValue.setText("0/" + str(self._threads))
 
     def initPlotWidget(self):
         if not self.plotExist:
@@ -160,6 +160,13 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
             self.bitMapWidget = BitMapWidget(self._resultsList[-1].get_memory())
             self.layoutVerticalCanvas.addWidget(self.bitMapWidget)
             self.canvasExist = True
+
+    def checkFreq(self):
+        if self._qbits > 10:
+            QtWidgets.QMessageBox.warning(self, "Error",
+                                          "10 qbits max!")
+        else:
+            self.freqTable()
 
     def tableInit(self):
         headersLabels = ["Q0"]
@@ -187,6 +194,12 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self._resultsList.clear()
         self._model.setRowCount(0)
         self._modelFreq.setRowCount(0)
+
+        self.clearPushButton.setEnabled(False)
+        self.distribPushButton.setEnabled(False)
+        self.externalDistribPushButton.setEnabled(False)
+        self.bitmapPushButton.setEnabled(False)
+        self.frequencyPushButton.setEnabled(False)
 
 
     def saveToFile(self):
@@ -247,6 +260,7 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.distribPushButton.setEnabled(False)
         self.externalDistribPushButton.setEnabled(False)
         self.bitmapPushButton.setEnabled(False)
+        self.frequencyPushButton.setEnabled(False)
 
     def enGUIEl(self):
         self.shotsSpinBox.setEnabled(True)
@@ -257,6 +271,7 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.distribPushButton.setEnabled(True)
         self.externalDistribPushButton.setEnabled(True)
         self.bitmapPushButton.setEnabled(True)
+        self.frequencyPushButton.setEnabled(True)
 
     def startAsync(self):
         self._currentJob = 0
@@ -301,39 +316,47 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
             self._modelFreq.setItem(i, 0, itemQ)
 
     def showHist(self):
-        self.initPlotWidget()
-        self.tabWidget_2.setCurrentIndex(0)
+        if self._qbits > 10:
+            QtWidgets.QMessageBox.warning(self, "Error",
+                                          "10 qbits max!")
+        else:
+            self.initPlotWidget()
+            self.tabWidget_2.setCurrentIndex(0)
 
-        dictionary = self._resultsList[-1].get_counts()
-        dictionarySum = sum(dictionary.values())
-        dictionaryPercent = dictionary
+            dictionary = self._resultsList[-1].get_counts()
+            dictionarySum = sum(dictionary.values())
+            dictionaryPercent = dictionary
 
-        for i in dictionary:
-            dictionaryPercent[i] = dictionary[i] / dictionarySum * 100
-        labels = list(dictionaryPercent.keys())
-        formatter = FuncFormatter(lambda y, pos: "%1.1f%%" % (y))
-        self.matplotWidget.ax.yaxis.set_major_formatter(formatter)
-        self.matplotWidget.ax.bar(labels, dictionary.values(), color='g')
-        self.matplotWidget.ax.set_title("Frequency distribution")
-        for tick in self.matplotWidget.ax.get_xticklabels():
-            tick.set_rotation(45)
-        self.matplotWidget.canvas.draw()
+            for i in dictionary:
+                dictionaryPercent[i] = dictionary[i] / dictionarySum * 100
+            labels = list(dictionaryPercent.keys())
+            formatter = FuncFormatter(lambda y, pos: "%1.1f%%" % (y))
+            self.matplotWidget.ax.yaxis.set_major_formatter(formatter)
+            self.matplotWidget.ax.bar(labels, dictionary.values(), color='g')
+            self.matplotWidget.ax.set_title("Frequency distribution")
+            for tick in self.matplotWidget.ax.get_xticklabels():
+                tick.set_rotation(45)
+            self.matplotWidget.canvas.draw()
 
     def showHistExternal(self):
-        dictionary = self._resultsList[-1].get_counts()
-        dictionarySum = sum(dictionary.values())
-        dictionaryPercent = dictionary
+        if self._qbits > 10:
+            QtWidgets.QMessageBox.warning(self, "Error",
+                                          "10 qbits max!")
+        else:
+            dictionary = self._resultsList[-1].get_counts()
+            dictionarySum = sum(dictionary.values())
+            dictionaryPercent = dictionary
 
-        for i in dictionary:
-            dictionaryPercent[i] = dictionary[i]/dictionarySum * 100
-        labels = list(dictionaryPercent.keys())
-        formatter = FuncFormatter(lambda y, pos: "%1.1f%%" % (y))
-        fig, ax = plt.subplots(num='Distribution')
-        ax.yaxis.set_major_formatter(formatter)
-        plt.bar(labels, dictionary.values(), color='g')
-        plt.title("Frequency distribution")
-        plt.xticks(rotation=45)
-        plt.show()
+            for i in dictionary:
+                dictionaryPercent[i] = dictionary[i]/dictionarySum * 100
+            labels = list(dictionaryPercent.keys())
+            formatter = FuncFormatter(lambda y, pos: "%1.1f%%" % (y))
+            fig, ax = plt.subplots(num='Distribution')
+            ax.yaxis.set_major_formatter(formatter)
+            plt.bar(labels, dictionary.values(), color='g')
+            plt.title("Frequency distribution")
+            plt.xticks(rotation=45)
+            plt.show()
 
     def showBitMap(self):
         self.initBitMapWidget()

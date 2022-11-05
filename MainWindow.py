@@ -23,7 +23,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(979, 486)
+        MainWindow.resize(979, 503)
         MainWindow.setMinimumSize(QSize(0, 0))
         icon = QIcon()
         icon.addFile(u":/images/icon.png", QSize(), QIcon.Normal, QIcon.Off)
@@ -208,7 +208,32 @@ class Ui_MainWindow(object):
 "     border-style: solid;\n"
 "     border-width: 1px;\n"
 "     border-color: #DCDCDC;\n"
-" }")
+" }\n"
+"#frequencyPushButton\n"
+"{\n"
+"	background:rgb(0,133,252);\n"
+"	"
+                        "border-radius:4px;\n"
+"	font-size:15px;\n"
+"	font-family:Century Gothic, sans-serif;\n"
+"	color:rgb(255,255,255);\n"
+"}\n"
+"#frequencyPushButton:pressed\n"
+"{\n"
+"	background:rgb(0,122,228);\n"
+"	border-radius:4px;\n"
+"	font-size:15px;\n"
+"	font-family:Century Gothic, sans-serif;\n"
+"	color:rgb(255,255,255);\n"
+"}\n"
+"#frequencyPushButton:disabled\n"
+"{\n"
+"	background:rgb(143,188,228);\n"
+"	border-radius:4px;\n"
+"	font-size:15px;\n"
+"	font-family:Century Gothic, sans-serif;\n"
+"	color:rgb(255,255,255);\n"
+"}")
         self.actionExit = QAction(MainWindow)
         self.actionExit.setObjectName(u"actionExit")
         self.actionSave_result = QAction(MainWindow)
@@ -252,6 +277,8 @@ class Ui_MainWindow(object):
 
         self.resultTableView = QTableView(self.Generator)
         self.resultTableView.setObjectName(u"resultTableView")
+        self.resultTableView.horizontalHeader().setDefaultSectionSize(50)
+        self.resultTableView.horizontalHeader().setStretchLastSection(False)
 
         self.horizontalLayout_8.addWidget(self.resultTableView)
 
@@ -488,6 +515,7 @@ class Ui_MainWindow(object):
         self.statTableView.setObjectName(u"statTableView")
         self.statTableView.setMinimumSize(QSize(200, 0))
         self.statTableView.setMaximumSize(QSize(200, 16777215))
+        self.statTableView.horizontalHeader().setStretchLastSection(True)
 
         self.horizontalLayout_9.addWidget(self.statTableView)
 
@@ -524,6 +552,26 @@ class Ui_MainWindow(object):
         self.gridLayout_6.setObjectName(u"gridLayout_6")
         self.verticalLayout_7 = QVBoxLayout()
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
+        self.frequencyPushButton = QPushButton(self.groupBox_4)
+        self.frequencyPushButton.setObjectName(u"frequencyPushButton")
+        self.frequencyPushButton.setEnabled(False)
+        self.frequencyPushButton.setMinimumSize(QSize(204, 30))
+        self.frequencyPushButton.setMaximumSize(QSize(204, 30))
+
+        self.verticalLayout_7.addWidget(self.frequencyPushButton)
+
+        self.line = QFrame(self.groupBox_4)
+        self.line.setObjectName(u"line")
+        self.line.setMinimumSize(QSize(0, 10))
+        font = QFont()
+        font.setBold(True)
+        self.line.setFont(font)
+        self.line.setLineWidth(2)
+        self.line.setFrameShape(QFrame.HLine)
+        self.line.setFrameShadow(QFrame.Sunken)
+
+        self.verticalLayout_7.addWidget(self.line)
+
         self.verticalLayout_5 = QVBoxLayout()
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.distribPushButton = QPushButton(self.groupBox_4)
@@ -545,17 +593,15 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_7.addLayout(self.verticalLayout_5)
 
-        self.line = QFrame(self.groupBox_4)
-        self.line.setObjectName(u"line")
-        self.line.setMinimumSize(QSize(0, 10))
-        font = QFont()
-        font.setBold(True)
-        self.line.setFont(font)
-        self.line.setLineWidth(2)
-        self.line.setFrameShape(QFrame.HLine)
-        self.line.setFrameShadow(QFrame.Sunken)
+        self.line_2 = QFrame(self.groupBox_4)
+        self.line_2.setObjectName(u"line_2")
+        self.line_2.setMinimumSize(QSize(0, 10))
+        self.line_2.setFont(font)
+        self.line_2.setLineWidth(2)
+        self.line_2.setFrameShape(QFrame.HLine)
+        self.line_2.setFrameShadow(QFrame.Sunken)
 
-        self.verticalLayout_7.addWidget(self.line)
+        self.verticalLayout_7.addWidget(self.line_2)
 
         self.bitmapPushButton = QPushButton(self.groupBox_4)
         self.bitmapPushButton.setObjectName(u"bitmapPushButton")
@@ -643,6 +689,7 @@ class Ui_MainWindow(object):
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.plotTab), QCoreApplication.translate("MainWindow", u"Distribution", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.canvasTab), QCoreApplication.translate("MainWindow", u"Bitmap", None))
         self.groupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"Options", None))
+        self.frequencyPushButton.setText(QCoreApplication.translate("MainWindow", u"Show frequency test", None))
         self.distribPushButton.setText(QCoreApplication.translate("MainWindow", u"Show distribution", None))
         self.externalDistribPushButton.setText(QCoreApplication.translate("MainWindow", u"External view", None))
         self.bitmapPushButton.setText(QCoreApplication.translate("MainWindow", u"Show bitmap", None))
