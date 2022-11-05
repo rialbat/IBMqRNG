@@ -1,4 +1,4 @@
-from PySide6 import QtCore
+from PySide2 import QtCore
 from qiskit import result
 import ibmapi
 

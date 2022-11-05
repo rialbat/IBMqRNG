@@ -1,7 +1,7 @@
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 
-from PySide6.QtWidgets import QWidget, QVBoxLayout
+from PySide2.QtWidgets import QWidget, QVBoxLayout
 
 __all__ = ['MatplotlibWidget']
 

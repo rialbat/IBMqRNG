@@ -11,7 +11,7 @@ import math
 import re
 
 # GUI
-from PySide6 import QtWidgets, QtCore, QtGui
+from PySide2 import QtWidgets, QtCore, QtGui
 import MainWindow
 import AuthWindow
 
@@ -223,6 +223,7 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self._qbits = self.qbitsSpinBox.value()
 
         self._model.setRowCount(0)
+        self._model.clear()
         headersLabels = [f"Q{x}" for x in range(self._qbits)]
         self._model.setHorizontalHeaderLabels(headersLabels)
 
@@ -330,12 +331,12 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
 def main():
     app = QtWidgets.QApplication(sys.argv)
     auth_window = AuthUI()
-    if auth_window.exec() and not auth_window.successLogin:
+    if auth_window.exec_() and not auth_window.successLogin:
         pass
     if auth_window.successLogin:
         window = ProgrammUI()
         window.show()
-        app.exec()
+        app.exec_()
 
 
 if __name__ == '__main__':

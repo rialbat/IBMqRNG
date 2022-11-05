@@ -1,6 +1,6 @@
 import math
 
-from PySide6 import QtGui, QtCore, QtWidgets
+from PySide2 import QtGui, QtCore, QtWidgets
 
 class BitMapWidget(QtWidgets.QWidget):
     def __init__(self, bitSeq):

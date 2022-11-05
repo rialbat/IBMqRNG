@@ -1,5 +1,5 @@
-from PySide6.QtWidgets import QMenu
-from PySide6.QtCore import Signal
+from PySide2.QtWidgets import QMenu
+from PySide2.QtCore import Signal
 
 class CustomMenu(QMenu):
 
