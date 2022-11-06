@@ -6,9 +6,9 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7295429.svg)](https://doi.org/10.5281/zenodo.7295429)
 [![License](https://camo.githubusercontent.com/ec1b7780bdc1d8401873e5a03328cc295d44f6b797b35f493b32996c0faad199/68747470733a2f2f706f7365722e707567782e6f72672f6c61726176656c2f6672616d65776f726b2f6c6963656e73652e737667)](https://github.com/rialbat/IBMqRNG/blob/main/LICENSE)
-![GitHub issues](https://img.shields.io/github/issues-raw/rialbat/IBMqRNG)
-![Status](https://img.shields.io/badge/status-alpha-green)
-![python](https://img.shields.io/badge/python-3.9%2C3.10-green)
+[![GitHub issues](https://img.shields.io/github/issues-raw/rialbat/IBMqRNG)](https://github.com/rialbat/IBMqRNG)
+[![Status](https://img.shields.io/badge/status-alpha-green)](https://github.com/rialbat/IBMqRNG)
+[![Python](https://img.shields.io/badge/python-3.9%2C3.10-green)](https://github.com/rialbat/IBMqRNG)
 
 IBMqRNG is a random bit generator for IBM Quantum API written with PySide6.
 
@@ -20,8 +20,7 @@ Tested on Python 3.9, 3.10
 | ---     | --- |
 | [**Qiskit**](https://github.com/Qiskit/qiskit) | [![](https://img.shields.io/github/release/Qiskit/qiskit.svg?)](https://github.com/Qiskit/qiskit/releases/tag/0.39.2)  |
 | [**Matplotlib**](https://github.com/matplotlib/matplotlib) | [![](https://img.shields.io/github/release/matplotlib/matplotlib.svg?)](https://github.com/matplotlib/matplotlib/releases/tag/v3.6.2) |
-| [**PySide6**](https://pypi.org/project/PySide6/) | ![version](https://img.shields.io/badge/release-v6.4.0.1-1182C3) |
-
+| [**PySide6**](https://pypi.org/project/PySide6/) | [![version](https://img.shields.io/badge/release-v6.4.0.1-1182C3)](https://pypi.org/project/PySide6/) |
 
 ## Manual installation
 -----------------
