@@ -481,6 +481,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.groupBox_3)
 
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_4.addItem(self.verticalSpacer)
+
         self.clearPushButton = QPushButton(self.Generator)
         self.clearPushButton.setObjectName(u"clearPushButton")
         self.clearPushButton.setEnabled(False)
