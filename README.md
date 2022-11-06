@@ -20,7 +20,7 @@ Tested on Python 3.9, 3.10
 | ---     | --- |
 | [**Qiskit**](https://github.com/Qiskit/qiskit) | [![](https://img.shields.io/github/release/Qiskit/qiskit.svg?)](https://github.com/Qiskit/qiskit/releases/tag/0.39.2)  |
 | [**Matplotlib**](https://github.com/matplotlib/matplotlib) | [![](https://img.shields.io/github/release/matplotlib/matplotlib.svg?)](https://github.com/matplotlib/matplotlib/releases/tag/v3.6.2) |
-| [**PySide6**](https://pypi.org/project/PySide6/) | v6.4.0.1 |
+| [**PySide6**](https://pypi.org/project/PySide6/) | ![version](https://img.shields.io/badge/release-v6.4.0.1-1182C3) |
 
 
 ## Manual installation
@@ -47,25 +47,32 @@ python main.py
 ## Guide to using
 -----------------
 1. Use your [IBMQ](https://quantum-computing.ibm.com/) key.
+
 <p align="center">
   <img src="https://github.com/rialbat/IBMqRNG/blob/main/images/Auth.png?raw=true" width="400px"/>
 </p>
+
 2. Choose one of the cloud or local backends.
+
 <p align="center">
-  <img src="https://github.com/rialbat/IBMqRNG/blob/main/images/Main1.png?raw=true" width="400px"/>
+  <img src="https://github.com/rialbat/IBMqRNG/blob/main/images/Main1.png?raw=true" width="600px"/>
 </p>
+
 3. Specify the number of shots (20 000 max), qbits, and threads (max 5 for free IBM account).
 4. If you want to see the results in the table, check the box "Show results in the table" (Don't use this for a large number of values).
+
 <p align="center">
-  <img src="https://github.com/rialbat/IBMqRNG/blob/main/images/Main2.png?raw=true" width="400px"/>
+  <img src="https://github.com/rialbat/IBMqRNG/blob/main/images/Main2.png?raw=true" width="600px"/>
 </p>
+
 5. Use "File -> Save bit sequence" to save the result.
 6. In the statistics menu, you can calculate frequencies, plot a distribution graph, as well as a bitmap.
+
 <p align="center">
-  <img src="https://github.com/rialbat/IBMqRNG/blob/main/images/Main3.png?raw=true" width="400px"/>
+  <img src="https://github.com/rialbat/IBMqRNG/blob/main/images/Main3.png?raw=true" width="600px"/>
 </p>
 <p align="center">
-  <img src="https://github.com/rialbat/IBMqRNG/blob/main/images/Main4.png?raw=true" width="400px"/>
+  <img src="https://github.com/rialbat/IBMqRNG/blob/main/images/Main4.png?raw=true" width="600px"/>
 </p>
 
 ### ❗Warning
@@ -84,15 +91,15 @@ At the moment, statistics can be built only once, then there will be overlays
 -----------------
 Quantum Random-Number Generators (QRNG), unlike PseudoRandom Number Generators (PRNG), generate truly random numbers. There are several reasons for this. Firstly, quantum generators are hardware generators. All generation and measurement processes take place in digital-analogue space, as opposed to PRNG, which operates, as a rule, on the same processor architecture in the form of a machine language algorithm. Secondly, any generator with good statistical and cryptographic properties only works with entropy. Moreover, the difference lies in the fact that the entropy of the PRNG is, as a rule, the reading of external physical (natural) noises, for example, temperature, vibration, and the photoelectric effect, which can be restored according to the existing laws of physics with an understanding of the initial conditions, and the entropy of the QRNG is chaotic quantum processes that are almost impossible to measure.
 
-## 📄 License
------------------
-**[MIT License](https://github.com/rialbat/IBMqRNG/blob/main/LICENSE)**
-
-Copyright (c) 2022 **[rialbat](https://github.com/rialbat)**
-
 ## ![:octocat:](https://github.githubassets.com/images/icons/emoji/octocat.png ":octocat:")References
 -----------------
 1. PySide6 - https://wiki.qt.io/Qt_for_Python
 2. IBMQ - https://quantum-computing.ibm.com/
 3. Matplotlib - https://matplotlib.org/
 4. Qiskit - https://qiskit.org/
+
+## 📄 License
+-----------------
+**[MIT License](https://github.com/rialbat/IBMqRNG/blob/main/LICENSE)**
+
+Copyright (c) 2022 **[rialbat](https://github.com/rialbat)**
