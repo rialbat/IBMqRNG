@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>979</width>
-    <height>503</height>
+    <width>980</width>
+    <height>545</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -219,6 +219,30 @@ QMenu::item:selected
 	color:rgb(255,255,255);
 }
 #frequencyPushButton:disabled
+{
+	background:rgb(143,188,228);
+	border-radius:4px;
+	font-size:15px;
+	font-family:Century Gothic, sans-serif;
+	color:rgb(255,255,255);
+}
+#numbersPushButton
+{
+	background:rgb(0,133,252);
+	border-radius:4px;
+	font-size:15px;
+	font-family:Century Gothic, sans-serif;
+	color:rgb(255,255,255);
+}
+#numbersPushButton:pressed
+{
+	background:rgb(0,122,228);
+	border-radius:4px;
+	font-size:15px;
+	font-family:Century Gothic, sans-serif;
+	color:rgb(255,255,255);
+}
+#numbersPushButton:disabled
 {
 	background:rgb(143,188,228);
 	border-radius:4px;
@@ -657,6 +681,22 @@ QMenu::item:selected
                 </property>
                </widget>
               </item>
+              <item>
+               <widget class="QPushButton" name="numbersPushButton">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Generate numbers</string>
+                </property>
+               </widget>
+              </item>
              </layout>
             </item>
            </layout>
@@ -903,7 +943,7 @@ QMenu::item:selected
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>979</width>
+     <width>980</width>
      <height>22</height>
     </rect>
    </property>

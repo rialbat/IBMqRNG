@@ -23,7 +23,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(979, 503)
+        MainWindow.resize(980, 545)
         MainWindow.setMinimumSize(QSize(0, 0))
         icon = QIcon()
         icon.addFile(u":/images/icon.png", QSize(), QIcon.Normal, QIcon.Off)
@@ -232,6 +232,31 @@ class Ui_MainWindow(object):
 "	border-radius:4px;\n"
 "	font-size:15px;\n"
 "	font-family:Century Gothic, sans-serif;\n"
+"	color:rgb(255,255,255);\n"
+"}\n"
+"#numbersPushButton\n"
+"{\n"
+"	background:rgb(0,133,252);\n"
+"	border-radius:4px;\n"
+"	font-size:15px;\n"
+"	font-family:Century Gothic, sans-serif;\n"
+"	color:rgb(255,255,255);\n"
+"}\n"
+"#numbersPushButton:pressed\n"
+"{\n"
+"	background:rgb(0,122,228);\n"
+"	border-radius:4px;\n"
+"	font-size:15px;\n"
+"	font-family:Century Gothic, sans-serif;\n"
+"	color:rgb(255,255,255);\n"
+"}\n"
+"#numbersPushButton:disabled\n"
+"{\n"
+"	background:rgb(143,188,228);\n"
+"	border-radius:4px;\n"
+"	font-size:15px;\n"
+"	font-fam"
+                        "ily:Century Gothic, sans-serif;\n"
 "	color:rgb(255,255,255);\n"
 "}")
         self.actionExit = QAction(MainWindow)
@@ -499,6 +524,13 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.startPushButton)
 
+        self.numbersPushButton = QPushButton(self.Generator)
+        self.numbersPushButton.setObjectName(u"numbersPushButton")
+        self.numbersPushButton.setEnabled(False)
+        self.numbersPushButton.setMinimumSize(QSize(0, 30))
+
+        self.verticalLayout_4.addWidget(self.numbersPushButton)
+
 
         self.verticalLayout_6.addLayout(self.verticalLayout_4)
 
@@ -635,7 +667,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 979, 22))
+        self.menubar.setGeometry(QRect(0, 0, 980, 22))
         self.menuFile = QMenu(self.menubar)
         self.menuFile.setObjectName(u"menuFile")
         self.menuAbout = CustomMenu(self.menubar)
@@ -689,6 +721,7 @@ class Ui_MainWindow(object):
         self.resultsCheckBox.setText(QCoreApplication.translate("MainWindow", u"Show results in the table", None))
         self.clearPushButton.setText(QCoreApplication.translate("MainWindow", u"Clear results", None))
         self.startPushButton.setText(QCoreApplication.translate("MainWindow", u"Start", None))
+        self.numbersPushButton.setText(QCoreApplication.translate("MainWindow", u"Generate numbers", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.Generator), QCoreApplication.translate("MainWindow", u"Generator", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.plotTab), QCoreApplication.translate("MainWindow", u"Distribution", None))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.canvasTab), QCoreApplication.translate("MainWindow", u"Bitmap", None))

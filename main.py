@@ -14,6 +14,7 @@ import re
 from PySide6 import QtWidgets, QtCore, QtGui
 import MainWindow
 import AuthWindow
+import GenDialog
 
 # Plot
 from matplotlib import pyplot as plt
@@ -26,7 +27,7 @@ from bitmapwidget import BitMapWidget
 # For Multithreading
 from worker import Worker
 
-programVersion = '1.1'
+programVersion = '1.2'
 
 
 class AuthUI(QtWidgets.QDialog, AuthWindow.Ui_Dialog):
@@ -85,6 +86,49 @@ class AuthUI(QtWidgets.QDialog, AuthWindow.Ui_Dialog):
     def successLogin(self):
         return self._successLogin
 
+class GenDialogUI(QtWidgets.QDialog, GenDialog.Ui_Dialog):
+    def __init__(self, resultList):
+        super().__init__()
+        self.setupUi(self)
+        self.generatePushButton.clicked.connect(self.genNumber)
+        self._resultList = resultList
+        self._bitCache = ''
+        self._bitLen = 0
+        self.initCache()
+
+    def get_bit_string(self, n: int) -> str:
+        if len(self._bitCache) >= n:
+            bitString = self._bitCache[0:n]
+            self._bitCache = self._bitCache[n:]
+            return bitString
+
+    def initCache(self):
+        for i in self._resultList:
+            for j in i.get_memory():
+                for z in j:
+                    self._bitCache += str(z)
+        self._bitLen = len(self._bitCache)
+
+    def genNumber(self):
+        numBit = self.bitSpinBox.value()
+        numberCount = int(self._bitLen/numBit)
+        savePath = QtWidgets.QFileDialog.getSaveFileName(
+            self, 'Save File', '', 'TXT(*.txt)')
+        saveFile = QtCore.QFile(savePath[0])
+
+        if savePath[0]:
+            if saveFile.open(QtCore.QFile.WriteOnly | QtCore.QFile.Truncate):
+                result = QtCore.QTextStream(saveFile)
+                for i in range(numberCount):
+                    if i != numberCount - 1:
+                        result << str(int(self.get_bit_string(numBit), 2)) << ","
+                    else:
+                        result << str(int(self.get_bit_string(numBit), 2))
+
+            QtWidgets.QMessageBox.information(self, "Save result",
+                                              "Success!")
+
+
 
 class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
     def __init__(self):
@@ -101,6 +145,7 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.externalDistribPushButton.clicked.connect(self.showHistExternal)
         self.bitmapPushButton.clicked.connect(self.showBitMap)
         self.frequencyPushButton.clicked.connect(self.checkFreq)
+        self.numbersPushButton.clicked.connect(self.initGenDialog)
         self.resultsCheckBox.stateChanged.connect(self.checkBoxStatus)
         self.actionSave_result.triggered.connect(self.saveToFile)
         self.backendsListWidget.itemSelectionChanged.connect(self.selectBackend)
@@ -148,6 +193,11 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
             QtWidgets.QMessageBox.information(self, "Jobs' update",
                                               "All jobs completed!")
             self.jobsLabelStatusValue.setText("0/" + str(self._threads))
+
+    def initGenDialog(self):
+        gen_window = GenDialogUI(self._resultsList)
+        if gen_window.exec():
+            pass
 
     def initPlotWidget(self):
         if not self.plotExist:
@@ -261,6 +311,7 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.externalDistribPushButton.setEnabled(False)
         self.bitmapPushButton.setEnabled(False)
         self.frequencyPushButton.setEnabled(False)
+        self.numbersPushButton.setEnabled(False)
 
     def enGUIEl(self):
         self.shotsSpinBox.setEnabled(True)
@@ -272,6 +323,7 @@ class ProgrammUI(QtWidgets.QMainWindow, MainWindow.Ui_MainWindow):
         self.externalDistribPushButton.setEnabled(True)
         self.bitmapPushButton.setEnabled(True)
         self.frequencyPushButton.setEnabled(True)
+        self.numbersPushButton.setEnabled(True)
 
     def startAsync(self):
         self._currentJob = 0
