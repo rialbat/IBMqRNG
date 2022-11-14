@@ -48,7 +48,7 @@ python main.py
 1. Use your [IBMQ](https://quantum-computing.ibm.com/) key.
 
 <p align="center">
-  <img src="https://github.com/rialbat/IBMqRNG/blob/main/images/Auth.png?raw=true" width="400px"/>
+  <img src="https://github.com/rialbat/IBMqRNG/blob/main/images/Auth.png?raw=true" width="300"/>
 </p>
 
 2. Choose one of the cloud or local backends.
@@ -72,6 +72,15 @@ python main.py
 </p>
 <p align="center">
   <img src="https://github.com/rialbat/IBMqRNG/blob/main/images/Main4.png?raw=true" width="600px"/>
+</p>
+
+7. If you need to form a numerical sequence of bits, use the "Generate numbers" button.
+
+<p align="center">
+  <img src="https://github.com/rialbat/IBMqRNG/blob/main/images/Gen1.png?raw=true" width="300"/>
+</p>
+<p align="center">
+  <img src="https://github.com/rialbat/IBMqRNG/blob/main/images/Gen2.png?raw=true" width="600px"/>
 </p>
 
 ### ❗Warning
