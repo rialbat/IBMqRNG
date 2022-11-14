@@ -83,8 +83,7 @@ At the moment, statistics can be built only once, then there will be overlays
 -----------------
 
 1. Add the ability to overwrite statistical tests' results.
-2. Add the ability to generate bit-based numbers.
-3. Clear the code.
+2. Clear the code.
 
 ## Why are the values obtained randomly?
 -----------------
