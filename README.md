@@ -10,7 +10,7 @@
 [![Status](https://img.shields.io/badge/status-alpha-green)](https://github.com/rialbat/IBMqRNG)
 [![Python](https://img.shields.io/badge/python-3.9%2C3.10-green)](https://github.com/rialbat/IBMqRNG)
 
-IBMqRNG is a random bit generator for IBM Quantum API written with PySide6.
+IBMqRNG is a random bit (number) generator for IBM Quantum API written with PySide6.
 
 ## Requirements
 -----------------
