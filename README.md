@@ -10,7 +10,7 @@
 [![Status](https://img.shields.io/badge/status-alpha-green)](https://github.com/rialbat/IBMqRNG)
 [![Python](https://img.shields.io/badge/python-3.9%2C3.10-green)](https://github.com/rialbat/IBMqRNG)
 
-IBMqRNG is a random bit generator for IBM Quantum API written with PySide6.
+IBMqRNG is a random bit (number) generator for IBM Quantum API written with PySide6.
 
 ## Requirements
 -----------------
@@ -83,8 +83,7 @@ At the moment, statistics can be built only once, then there will be overlays
 -----------------
 
 1. Add the ability to overwrite statistical tests' results.
-2. Add the ability to generate bit-based numbers.
-3. Clear the code.
+2. Clear the code.
 
 ## Why are the values obtained randomly?
 -----------------
